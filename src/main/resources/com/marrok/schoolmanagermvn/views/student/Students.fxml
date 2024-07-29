@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.dlsc.gemsfx.*?>
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.dlsc.gemsfx.FilterView?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" stylesheets="@../../css/all.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
+<?import java.net.URL?>
+<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
+    <stylesheets>
+
+        <URL value="@../../css/spec/darcula.css"/>
+
+    </stylesheets>
     <top>
-        <Pane prefHeight="139.0" prefWidth="1102.0" styleClass="dashboard_panel" stylesheets="@../../css/all.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Pane prefHeight="139.0" prefWidth="1102.0" styleClass="dashboard_panel" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label layoutX="73.0" layoutY="30.0" text="Students" textFill="WHITE">
                     <font>
@@ -25,7 +37,7 @@
     </top>
 
     <left>
-        <JFXDrawer fx:id="drawer" alignment="TOP_RIGHT" defaultDrawerSize="200.0" prefWidth="50.0" styleClass="drawer_background" stylesheets="@../../css/all.css" BorderPane.alignment="TOP_CENTER">
+        <JFXDrawer fx:id="drawer" alignment="TOP_RIGHT" defaultDrawerSize="200.0" prefWidth="50.0" styleClass="drawer_background" BorderPane.alignment="TOP_CENTER">
             <children>
                 <JFXHamburger fx:id="hamburger" alignment="TOP_CENTER" maxHeight="50.0" prefHeight="50.0" prefWidth="50.0" styleClass="jfxhmburger" />
             </children>
@@ -33,15 +45,15 @@
     </left>
 
     <center>
-        <AnchorPane BorderPane.alignment="CENTER">
+        <AnchorPane>
             <children>
                 <VBox prefHeight="150.0" prefWidth="878.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <!-- FilterView, placed at the top -->
-                        <FilterView fx:id="filterView" StackPane.alignment="TOP_CENTER" />
+                        <FilterView fx:id="filterView" filterText="" subtitle="Use the filters below to narrow down the list of students" title="Filter Students" />
 
                         <!-- TableView, positioned below FilterView -->
-                        <TableView fx:id="tbData" stylesheets="@../../css/tableview.css" StackPane.alignment="CENTER">
+                        <TableView fx:id="tbData">
                             <columns>
                                 <TableColumn fx:id="id" prefWidth="75.0" text="id" />
                                 <TableColumn fx:id="firstName" prefWidth="75.0" text="First Name" />
@@ -56,11 +68,12 @@
                         </TableView>
 
                         <!-- Optional Pane, positioned at the bottom-right corner -->
-                        <Pane StackPane.alignment="BOTTOM_RIGHT" />
+                        <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
+
 
     </center>
 </BorderPane>

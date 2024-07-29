@@ -15,8 +15,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" stylesheets="@../../css/all.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController">
+<?import java.net.URL?>
+<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController">
+   <stylesheets>
+      <URL value="@../../css/spec/darcula.css"/>
+
+   </stylesheets>
    <center>
       <AnchorPane styleClass="dashboard_background">
          <children>
@@ -99,7 +103,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView fx:id="tbData" prefHeight="349.0" prefWidth="1066.0" stylesheets="@../../css/tableview.css">
+                        <TableView fx:id="tbData" prefHeight="349.0" prefWidth="1066.0">
                            <columns>
                               <TableColumn fx:id="id" prefWidth="75.0" text="StudentId" />
                               <TableColumn fx:id="firstName" prefWidth="75.0" text="First Name" />
@@ -144,12 +148,11 @@
                </font>
             </Label>
 
-<!--            <FontAwesomeIconView fx:id="exit_btn" fill="WHITE" glyphName="TIMES" layoutX="906.0" layoutY="35.0" onMouseClicked="#exit" selectionEnd="0" selectionStart="0" size="2em" />-->
          </children>
       </Pane>
    </top>
    <left>
-      <JFXDrawer fx:id="drawer" alignment="TOP_RIGHT" defaultDrawerSize="200.0" prefWidth="50.0" styleClass="drawer_background" stylesheets="@../../css/all.css" BorderPane.alignment="TOP_CENTER">
+      <JFXDrawer fx:id="drawer" alignment="TOP_RIGHT" defaultDrawerSize="200.0" prefWidth="50.0" styleClass="drawer_background" BorderPane.alignment="TOP_CENTER">
          <children>
             <JFXHamburger fx:id="hamburger" alignment="TOP_CENTER" maxHeight="50.0" prefHeight="50.0" prefWidth="50.0" styleClass="jfxhmburger" />
          </children>

@@ -47,7 +47,10 @@ public class NavDrawerController implements Initializable {
         System.out.println("NavDrawerController.goStudents");
         loadScene("/com/marrok/schoolmanagermvn/views/student/Students.fxml", event);
     }
-
+    public void goDashboard(ActionEvent event) {
+        System.out.println("NavDrawerController.goDashboard");
+        loadScene("/com/marrok/schoolmanagermvn/views/dashboard/dashboard.fxml", event);
+    }
     private void loadScene(String resourcePath, ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));
         try {
@@ -65,4 +68,6 @@ public class NavDrawerController implements Initializable {
 
         }
     }
+
+
 }

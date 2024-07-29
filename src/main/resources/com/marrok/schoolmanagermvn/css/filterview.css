@@ -1,0 +1,62 @@
+
+
+/* Background color for the FilterView */
+.filter-view {
+    -fx-background-color: white; /* Matches root background */
+    -fx-padding: 10px;
+}
+
+/* Text field background color inside the FilterView */
+.filter-view .text-field {
+    -fx-background-color: #C4C4C4;
+    -fx-border-color: rgba(24, 31, 199, 0.29);
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8B8383;
+}
+
+/* Filter group headers */
+.filter-view .filter-group-header {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
+
+/* Filter labels */
+.filter-view .filter-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+
+
+
+/* Optional: Styling for FilterView subtitle */
+.subtitle {
+    -fx-text-fill: #8B8383;
+}
+
+
+/* Style for FilterView */
+#FilterView {
+    -fx-background-color: #434343; /* Matches root background */
+    -fx-padding: 10px;
+    -fx-border-color: #C4C4C4;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-spacing: 5px;
+}
+
+ .search-bar {
+    -fx-background-color: #C4C4C4;
+    -fx-border-color: rgba(24, 31, 199, 0.29);
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: black; /* Adjust as needed for visibility */
+}
+
+ .search-bar .prompt-text {
+    -fx-text-fill: #8B8383;
+}

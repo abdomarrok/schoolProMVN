@@ -54,8 +54,6 @@ public class StudentsController implements Initializable {
     }
 
     private void loadFilter() {
-        filterView.setTitle("Filter Students");
-        filterView.setSubtitle("Use the filters below to narrow down the list of students");
         filterView.setTextFilterProvider(text -> student ->
                 student.getFname().toLowerCase().contains(text.toLowerCase()) ||
                         student.getLname().toLowerCase().contains(text.toLowerCase())
