@@ -1,0 +1,96 @@
+/*
+
+background 434343
+textfiealdbackgroung C4C4C4
+textfieald strok 181FC7 29%
+pink E7267A for some icon
+red FA0C0C
+
+*/
+
+
+
+/* General background color */
+.root {
+    -fx-background-color: #434343;
+}
+
+/* Text field background color */
+.text-field {
+    -fx-background-color: #C4C4C4;
+    -fx-stroke: #181FC7 ;
+    -fx-border-color: rgba(24, 31, 199, 0.29);
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8B8383;
+}
+
+
+/* Icon with pink color */
+.icon-pink {
+    -fx-fill: #E7267A;
+}
+
+/* Red color for specific elements */
+.red-element {
+    -fx-background-color: #FA0C0C;
+    -fx-text-fill: white;
+}
+
+.lgn_btn {
+    -fx-background-color: #434343;
+    -fx-font-family: 'Andalus';
+    -fx-background-radius: 10px;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 1);
+}
+
+
+
+.btmBackground{
+
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 50px 50px 0 0;
+    -fx-border-radius: 50px 50px 0 0; /* Only top-left corner */
+
+}
+
+.dashboard_panel {
+    -fx-background-color: #434343;
+    -fx-background-radius: 0 0 0 0px;
+    -fx-border-radius: 0 0 0 0px;
+}
+
+.dashboard_background {
+    -fx-background-color: #FFFFFF;
+
+}
+
+/* Background color */
+.drawer_background {
+    -fx-background-color: #434343;
+}
+/* JFXHamburger styles */
+.jfxhmburger {
+    -fx-padding: 10px;
+    -fx-background-color: #434343;
+}
+
+/* Button styles */
+.jfxbtn {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 30px;
+    -fx-background-color: transparent; /* Default background color */
+    -fx-border-width: 0 0 0 5px;
+    -fx-border-color: transparent;
+}
+
+/* Hover effect for buttons */
+.jfxbtn:hover {
+    -fx-background-color: #E7267A; /* Change background color on hover */
+    -fx-text-fill: white; /* Keep text color white on hover */
+}
