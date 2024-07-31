@@ -10,7 +10,6 @@
 
 <BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController">
    <stylesheets>
-<!--      <URL value="@../../css/spec/darcula.css" />-->
       <URL value="@../../css/all.css" />
       <URL value="@../../css/tableview.css" />
       <URL value="@../../css/chart.css" />
