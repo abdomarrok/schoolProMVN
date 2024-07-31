@@ -15,6 +15,10 @@ public class Module {
         this.name = name;
     }
 
+    public Module(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

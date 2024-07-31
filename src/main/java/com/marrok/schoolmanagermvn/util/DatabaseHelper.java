@@ -1,9 +1,7 @@
 package com.marrok.schoolmanagermvn.util;
 
+import com.marrok.schoolmanagermvn.model.*;
 import com.marrok.schoolmanagermvn.model.Module;
-import com.marrok.schoolmanagermvn.model.Session_model;
-import com.marrok.schoolmanagermvn.model.Student;
-import com.marrok.schoolmanagermvn.model.Teacher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -12,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -427,37 +426,8 @@ public class DatabaseHelper {
         return sessions;
     }
 
-    // Fetch module name by ID
-    public String getModuleById(int moduleId)  {
-        String query = "SELECT name FROM module WHERE module_id = ?";
-        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
-            stmt.setInt(1, moduleId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("name");
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null; // Or handle as appropriate if no result found
-    }
 
-    // Fetch teacher name by ID
-    public String getTeacherFullNameById(int teacherId)  {
-        String query = "SELECT * FROM teacher WHERE teacher_ID = ?";
-        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
-            stmt.setInt(1, teacherId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("lname") +" "+rs.getString("fname");
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null; // Or handle as appropriate if no result found
-    }
+
 
     public boolean addSession(int moduleId, int teacherId) {
         String query = "INSERT INTO course_session (module_ID, teacher_ID) VALUES (?, ?)";
@@ -503,6 +473,204 @@ public class DatabaseHelper {
             throw e;
         }
     }
+
+    public ObservableList<String> getAllModuleNames() throws SQLException {
+        String query = "SELECT name FROM module";
+        ObservableList<String> moduleNames = FXCollections.observableArrayList();
+        try (
+                PreparedStatement stmt = cnn.prepareStatement(query);
+                ResultSet rs= stmt.executeQuery(query)
+        ) {
+            while (rs.next()) {
+                moduleNames.add(rs.getString("name"));
+            }
+        }
+        return moduleNames;
+    }
+
+    public ObservableList<String> getAllTeacherNames() throws SQLException {
+        String query = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM teacher";
+        ObservableList<String> teacherNames = FXCollections.observableArrayList();
+        try ( PreparedStatement stmt = cnn.prepareStatement(query);
+              ResultSet rs= stmt.executeQuery(query)) {
+            while (rs.next()) {
+                teacherNames.add(rs.getString("full_name"));
+            }
+        }
+        return teacherNames;
+    }
+
+    public int getModuleIdByName(String moduleName) throws SQLException {
+        String query = "SELECT module_id FROM module WHERE name = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setString(1, moduleName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("module_id");
+                }
+            }
+        }
+        throw new SQLException("Module not found: " + moduleName);
+    }
+
+    public int getTeacherIdByName(String teacherName) throws SQLException {
+        String query = "SELECT teacher_ID FROM teacher WHERE CONCAT(fname, ' ', lname) = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setString(1, teacherName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("teacher_ID");
+                }
+            }
+        }
+        throw new SQLException("Teacher not found: " + teacherName);
+    }
+
+    public String getModuleById(int moduleId) {
+        String query = "SELECT name FROM module WHERE module_id = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = cnn.prepareStatement(query);
+            stmt.setInt(1, moduleId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("name");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
+    }
+
+
+
+
+
+    public String getTeacherFullNameById(int teacherId) {
+        String query = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM teacher WHERE teacher_ID = ?";
+        PreparedStatement stmt = null;
+        try {
+            stmt = cnn.prepareStatement(query);
+            stmt.setInt(1, teacherId);
+            ResultSet rs = stmt.executeQuery() ;
+            if (rs.next()) {
+                return rs.getString("full_name");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "";
+    }
+
+    public boolean addInscription(int studentId, int sessionId, LocalDate registrationDate, String price) {
+        String query = "INSERT INTO student_inscription (student_ID, session_id, registration_date, price) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+            stmt.setInt(2, sessionId);
+            stmt.setDate(3, java.sql.Date.valueOf(registrationDate));
+            stmt.setString(4, price);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateInscription(int inscriptionId, int studentId, int sessionId, LocalDate registrationDate, String price) {
+        String query = "UPDATE student_inscription SET student_ID = ?, session_id = ?, registration_date = ?, price = ? WHERE inscription_ID = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+            stmt.setInt(2, sessionId);
+            stmt.setDate(3, java.sql.Date.valueOf(registrationDate));
+            stmt.setString(4, price);
+            stmt.setInt(5, inscriptionId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteInscription(int inscriptionId) {
+        String query = "DELETE FROM student_inscription WHERE inscription_ID = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, inscriptionId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ObservableList<StudentInscription> getAllInscriptions() {
+        String query = "SELECT * FROM student_inscription";
+        ObservableList<StudentInscription> inscriptions = FXCollections.observableArrayList();
+        try (PreparedStatement stmt = cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                StudentInscription inscription = new StudentInscription(
+                        rs.getInt("inscription_ID"),
+                        rs.getInt("student_ID"),
+                        rs.getInt("session_id"),
+                        rs.getDate("registration_date").toLocalDate(),
+                        rs.getString("price")
+                );
+                inscriptions.add(inscription);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return inscriptions;
+    }
+
+    public ObservableList<StudentInscription> getInscriptionsByStudent(int studentId) {
+        String query = "SELECT * FROM student_inscription WHERE student_ID = ?";
+        ObservableList<StudentInscription> inscriptions = FXCollections.observableArrayList();
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    StudentInscription inscription = new StudentInscription(
+                            rs.getInt("inscription_ID"),
+                            rs.getInt("student_ID"),
+                            rs.getInt("session_id"),
+                            rs.getDate("registration_date").toLocalDate(),
+                            rs.getString("price")
+                    );
+                    inscriptions.add(inscription);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return inscriptions;
+    }
+
+    public ObservableList<StudentInscription> getInscriptionsBySession(int sessionId) {
+        String query = "SELECT * FROM student_inscription WHERE session_id = ?";
+        ObservableList<StudentInscription> inscriptions = FXCollections.observableArrayList();
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, sessionId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    StudentInscription inscription = new StudentInscription(
+                            rs.getInt("inscription_ID"),
+                            rs.getInt("student_ID"),
+                            rs.getInt("session_id"),
+                            rs.getDate("registration_date").toLocalDate(),
+                            rs.getString("price")
+                    );
+                    inscriptions.add(inscription);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return inscriptions;
+    }
+
 
 
 }

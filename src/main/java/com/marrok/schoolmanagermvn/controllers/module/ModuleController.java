@@ -1,12 +1,17 @@
 package com.marrok.schoolmanagermvn.controllers.module;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.marrok.schoolmanagermvn.controllers.inscription.InscriptionController;
 import com.marrok.schoolmanagermvn.model.Module;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,11 +22,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ModuleController {
 
@@ -34,14 +42,8 @@ public class ModuleController {
     @FXML
     private TableColumn<Module, String> nameColumn;
 
-    @FXML
-    private JFXButton addButton;
-
-    @FXML
-    private JFXButton updateButton;
-
-    @FXML
-    private JFXButton deleteButton;
+    @FXML private JFXDrawer drawer;
+    @FXML private JFXHamburger hamburger;
 
     private ObservableList<Module> moduleList = FXCollections.observableArrayList();
     private DatabaseHelper dbHelper;
@@ -56,6 +58,7 @@ public class ModuleController {
         }
 
         initTable();
+        loadDrawer();
         loadModulesFromDatabase();
     }
 
@@ -68,6 +71,7 @@ public class ModuleController {
         try {
             moduleList = dbHelper.getModules(); // Load modules from the database
             moduleTable.setItems(moduleList); // Set the loaded modules to the table view
+            System.out.println("Modules loaded and table updated."); // Debug line
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception
@@ -87,14 +91,13 @@ public class ModuleController {
                 stage.setTitle("Update Module");
                 stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png")));
 
-                // Set the controller for the update form
                 UpdateController controller = loader.getController();
                 controller.setModule(selectedModule);
                 controller.setController(this);
 
                 stage.showAndWait();
                 // Refresh the table data after updating the module
-                loadModulesFromDatabase();
+                refreshTableData();
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Error", "Could not open the module form.");
@@ -103,8 +106,6 @@ public class ModuleController {
             showAlert(Alert.AlertType.WARNING, "No Selection", "No module selected. Please select a module to update.");
         }
     }
-
-
     @FXML
     private void deleteModule() {
         Module selectedModule = moduleTable.getSelectionModel().getSelectedItem();
@@ -158,6 +159,44 @@ public class ModuleController {
             showAlert(Alert.AlertType.ERROR, "Error", "Could not open the module form.");
         }
     }
+
+    private void loadDrawer() {
+        try {
+            VBox box = FXMLLoader.load(getClass().getResource("/com/marrok/schoolmanagermvn/views/NavDrawer.fxml"));
+            drawer.setSidePane(box);
+            drawer.setMinWidth(0);
+
+        } catch (IOException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
+        task.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> drawer.toggle());
+
+        drawer.setOnDrawerOpening(event -> {
+            task.setRate(task.getRate() * -1);
+            task.play();
+            drawer.setMinWidth(220);
+        });
+
+        drawer.setOnDrawerClosed(event -> {
+            task.setRate(task.getRate() * -1);
+            task.play();
+            drawer.setMinWidth(0);
+        });
+    }
+
+    public void refreshTableData() {
+        try {
+            moduleList.setAll(dbHelper.getModules()); // Update the list with new data
+            moduleTable.refresh(); // Refresh the TableView
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to refresh module data.");
+        }
+    }
+
 
     public void exit(MouseEvent mouseEvent) {
         Platform.exit();

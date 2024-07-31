@@ -5,22 +5,24 @@
 
 <GridPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.session.FormController">
 
-       <Label text="Module ID:"  GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="moduleIdField" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <Label text="Module:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <ChoiceBox fx:id="moduleChoiceBox" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <Label text="Teacher ID:"  GridPane.rowIndex="1" GridPane.columnIndex="0" />
-        <TextField fx:id="teacherIdField" GridPane.columnSpan="1"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label text="Teacher:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <ChoiceBox fx:id="teacherChoiceBox" GridPane.columnSpan="1" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-        <HBox spacing="10"  GridPane.rowIndex="2" />
-         <Button fx:id="saveButton" onAction="#handleSave" text="Save" GridPane.rowIndex="2"  GridPane.columnIndex="0" />
-         <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-         <columnConstraints>
-            <ColumnConstraints />
-             <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-             <RowConstraints />
-         </rowConstraints>
-    </GridPane>
+    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnSpan="2">
+        <Button fx:id="saveButton" onAction="#handleSave" text="Save"/>
+        <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel"/>
+    </HBox>
+
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

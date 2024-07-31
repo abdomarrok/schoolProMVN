@@ -5,7 +5,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import org.kordamp.ikonli.javafx.*?>
 
 <BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.module.ModuleController">
     <stylesheets>
@@ -21,11 +20,16 @@
                         <Font size="36.0" />
                     </font>
                 </Label>
-                <FontIcon iconColor="WHITE" iconLiteral="fa-times" layoutX="890.0" layoutY="30.0" onMouseClicked="#exit" />
             </children>
         </AnchorPane>
     </top>
-
+    <left>
+        <JFXDrawer fx:id="drawer" alignment="TOP_RIGHT" defaultDrawerSize="200.0" prefWidth="50.0" styleClass="drawer_background" BorderPane.alignment="TOP_CENTER">
+            <children>
+                <JFXHamburger fx:id="hamburger" alignment="TOP_CENTER" maxHeight="50.0" prefHeight="50.0" prefWidth="50.0" styleClass="jfxhmburger" />
+            </children>
+        </JFXDrawer>
+    </left>
     <center>
         <AnchorPane>
             <VBox prefHeight="150.0" prefWidth="878.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

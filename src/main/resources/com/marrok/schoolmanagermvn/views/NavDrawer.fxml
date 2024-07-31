@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" styleClass="drawer_background" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.NavDrawerController">
+<VBox alignment="CENTER" spacing="10.0" styleClass="drawer_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.NavDrawerController">
     <stylesheets>
         <String fx:value="/com/marrok/schoolmanagermvn/css/all.css" />
     </stylesheets>
@@ -17,30 +16,40 @@
                 <FontIcon iconColor="white" iconLiteral="fa-dashboard" iconSize="24" />
             </graphic>
         </Button>
+        <Button fx:id="inscription_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0" onAction="#goInscriptions" styleClass="jfxbtn" text="Inscription">
+            <graphic>
+                <FontIcon iconColor="white" iconLiteral="fa-user-plus" iconSize="24" />
+            </graphic>
+        </Button>
         <Button fx:id="students_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" minWidth="200.0" onAction="#goStudents" styleClass="jfxbtn" text="Students">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="45.0" minWidth="200.0" onAction="#goTeachers"  styleClass="jfxbtn" text="Teachers">
+
+        <Button fx:id="modules_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0" onAction="#goModules" styleClass="jfxbtn" text="Modulls">
+            <graphic>
+                <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
+            </graphic>
+        </Button>
+        <Button fx:id="session_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0" onAction="#goSession" styleClass="jfxbtn" text="Session">
+            <graphic>
+                <FontIcon iconColor="white" iconLiteral="fa-circle-o-notch" iconSize="24" />
+            </graphic>
+        </Button>
+        <Button fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="45.0" minWidth="200.0" onAction="#goTeachers" styleClass="jfxbtn" text="Teachers">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="modules_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0"  onAction="#goModules" styleClass="jfxbtn" text="Modulls">
-            <graphic>
-                <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
-            </graphic>
-        </Button>
-        <Button fx:id="session_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0"  onAction="#goSession" styleClass="jfxbtn" text="Session">
-            <graphic>
-                <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
-            </graphic>
-        </Button>
-        <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="115.0" minWidth="200.0"  styleClass="jfxbtn" text="Settings">
+
+        <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="115.0" minWidth="200.0" styleClass="jfxbtn" text="Settings">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-cog" iconSize="24" />
             </graphic>
         </Button>
     </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

@@ -45,7 +45,7 @@ public class AddController {
             return;
         }
 
-        Module newModule = new Module(null, name);
+        Module newModule = new Module( name);
 
         try {
             boolean success = dbHelper.addModule(newModule);

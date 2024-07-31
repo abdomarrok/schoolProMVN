@@ -3,10 +3,12 @@ package com.marrok.schoolmanagermvn.controllers.session;
 import com.marrok.schoolmanagermvn.model.Session_model;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import com.marrok.schoolmanagermvn.util.GeneralUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -14,10 +16,10 @@ import java.sql.SQLException;
 public class FormController {
 
     @FXML
-    private TextField moduleIdField;
+    private ChoiceBox<String> moduleChoiceBox;
 
     @FXML
-    private TextField teacherIdField;
+    private ChoiceBox<String> teacherChoiceBox;
 
     @FXML
     private Button saveButton;
@@ -33,29 +35,54 @@ public class FormController {
     public void initialize() {
         try {
             dbHelper = new DatabaseHelper();
+            populateChoiceBoxes();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private void populateChoiceBoxes() {
+        try {
+            ObservableList<String> modules = FXCollections.observableArrayList(dbHelper.getAllModuleNames());
+            moduleChoiceBox.setItems(modules);
+
+            ObservableList<String> teachers = FXCollections.observableArrayList(dbHelper.getAllTeacherNames());
+            teacherChoiceBox.setItems(teachers);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not load modules or teachers.");
+        }
+    }
+
     @FXML
     private void handleSave() {
-        // Validate inputs and perform save or update operation
-        int moduleId = Integer.parseInt(moduleIdField.getText());
-        int teacherId = Integer.parseInt(teacherIdField.getText());
+        String selectedModule = moduleChoiceBox.getValue();
+        String selectedTeacher = teacherChoiceBox.getValue();
 
-        boolean success;
-        if (selectedSession == null) {
-            success = dbHelper.addSession(moduleId, teacherId);
-        } else {
-            success = dbHelper.updateSession(selectedSession.getId(), moduleId, teacherId);
-        }
+        if (selectedModule != null && selectedTeacher != null) {
+            try {
+                int moduleId = dbHelper.getModuleIdByName(selectedModule);
+                int teacherId = dbHelper.getTeacherIdByName(selectedTeacher);
 
-        if (success) {
-            parentController.loadSessionsFromDatabase(); // Refresh the session list
-            ((Stage) moduleIdField.getScene().getWindow()).close(); // Close the form
+                boolean success;
+                if (selectedSession == null) {
+                    success = dbHelper.addSession(moduleId, teacherId);
+                } else {
+                    success = dbHelper.updateSession(selectedSession.getId(), moduleId, teacherId);
+                }
+
+                if (success) {
+                    parentController.loadSessionsFromDatabase(); // Refresh the session list
+                    closeForm(); // Close the form
+                } else {
+                    GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not save the session.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not save the session.");
+            }
         } else {
-            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not save the session.");
+            GeneralUtil.showAlert(Alert.AlertType.WARNING, "Warning", "Please select both a module and a teacher.");
         }
     }
 
@@ -73,11 +100,13 @@ public class FormController {
         ((Stage) saveButton.getScene().getWindow()).close();
     }
 
-
     public void setSession(Session_model session) {
         this.selectedSession = session;
-        // Set fields with session data
-        moduleIdField.setText(String.valueOf(session.getModule_ID()));
-        teacherIdField.setText(String.valueOf(session.getTeacher_ID()));
+        // Set ChoiceBox fields with session data
+        String moduleName = dbHelper.getModuleById(session.getModule_ID());
+        moduleChoiceBox.setValue(moduleName);
+
+        String teacherName = dbHelper.getTeacherFullNameById(session.getTeacher_ID());
+        teacherChoiceBox.setValue(teacherName);
     }
 }

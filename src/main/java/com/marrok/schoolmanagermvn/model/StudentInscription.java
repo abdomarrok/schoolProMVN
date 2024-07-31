@@ -18,6 +18,14 @@ public class StudentInscription {
 
     private String price;
 
+    public StudentInscription(Integer id, Integer studentId, Integer sessionId, LocalDate registrationDate, String price) {
+        this.id = id;
+        this.studentId = studentId;
+        this.sessionId = sessionId;
+        this.registrationDate = registrationDate;
+        this.price = price;
+    }
+
     public Integer getId() {
         return id;
     }
