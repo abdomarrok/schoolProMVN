@@ -1,9 +1,15 @@
 package com.marrok.schoolmanagermvn.util;
 
+import com.marrok.schoolmanagermvn.model.Student;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper {
 
@@ -71,4 +77,89 @@ public class DatabaseHelper {
         return false;
     }
 
-}
+    public ObservableList<Student> getStudents() {
+        ObservableList<Student> students = FXCollections.observableArrayList();
+        String query = "SELECT * FROM student"; // Adjust query to match your table schema
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("stud_ID");
+                String fname = rs.getString("fname");
+                String lname = rs.getString("lname");
+                int year = rs.getInt("year");
+                int contact = rs.getInt("contact");
+                boolean gender = rs.getBoolean("gender");
+                int classRooms = rs.getInt("class_rooms");
+
+                Student student = new Student(id, fname, lname, year, contact, gender, classRooms);
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log error or handle it accordingly
+        }
+
+        return students;
+    }
+
+
+
+        // Existing connection and methods...
+
+        public List<String> getRecommendedFirstNames() {
+            List<String> recommendedNames = new ArrayList<>();
+            String query = "SELECT DISTINCT fname FROM student WHERE fname IS NOT NULL";
+
+            try (PreparedStatement preparedStatement = cnn.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    recommendedNames.add(resultSet.getString("fname"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exception
+            }
+
+            return recommendedNames;
+        }
+
+        public List<String> getRecommendedLastNames() {
+            List<String> recommendedNames = new ArrayList<>();
+            String query = "SELECT DISTINCT lname FROM student WHERE lname IS NOT NULL";
+
+            try (PreparedStatement preparedStatement = cnn.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    recommendedNames.add(resultSet.getString("lname"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exception
+            }
+
+            return recommendedNames;
+        }
+
+        public List<Integer> getClassrooms() {
+            List<Integer> classrooms = new ArrayList<>();
+            String query = "SELECT DISTINCT classRooms FROM student WHERE classRooms IS NOT NULL";
+
+            try (PreparedStatement preparedStatement = cnn.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    classrooms.add(resultSet.getInt("classRooms"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exception
+            }
+
+            return classrooms;
+        }
+    }
+

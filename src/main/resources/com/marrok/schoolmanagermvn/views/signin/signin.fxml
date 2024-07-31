@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import java.net.URL?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <AnchorPane fx:id="background" prefHeight="517.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.signin.SignInController">
     <stylesheets>
 <!--        <URL value="@../../css/all.css"/>-->
@@ -42,7 +43,7 @@
          <Insets />
       </opaqueInsets>
     </AnchorPane>
-<!--   <FontAwesomeIcon fx:id="exit_btn" fill="WHITE" glyphName="TIMES" layoutX="486.0" layoutY="35.0" selectionEnd="0" selectionStart="0" size="2em" onMouseClicked="#exit" />-->
+    <FontIcon  iconLiteral="fa-times" iconColor="WHITE" layoutX="486.0" layoutY="35.0" onMouseClicked="#exit"/>
 
 
    <opaqueInsets>
