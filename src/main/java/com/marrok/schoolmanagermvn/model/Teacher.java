@@ -1,6 +1,9 @@
 package com.marrok.schoolmanagermvn.model;
 
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class Teacher {
 
     private Integer id;
@@ -19,6 +22,24 @@ public class Teacher {
 
 
     private Boolean gender = false;
+
+    public Teacher( String fname, String lname, Integer phone, String address, Boolean gender) {
+
+        this.fname = fname;
+        this.lname = lname;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+    }
+
+    public Teacher(Integer id, String fname, String lname, Integer phone, String address, Boolean gender) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+    }
 
     public Integer getId() {
         return id;
@@ -68,4 +89,15 @@ public class Teacher {
         this.gender = gender;
     }
 
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacher_id=" + id +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", phone=" + phone +
+                ", address='" + address + '\'' +
+                ", gender=" + gender +
+                '}';
+    }
 }

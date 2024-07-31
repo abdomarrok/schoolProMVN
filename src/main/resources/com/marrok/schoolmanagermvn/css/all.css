@@ -18,6 +18,7 @@ red FA0C0C
 .lbl {
     -fx-font-family: 'Andalus';
     -fx-font-size: 20px;
+    -fx-text-fill: white;
 }
 
 .title_dashboard ,.titleLabel {

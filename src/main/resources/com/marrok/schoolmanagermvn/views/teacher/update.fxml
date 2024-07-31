@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.marrok.schoolmanagermvn.controllers.teacher.UpdateTeacherController">
+    <stylesheets>
+        <URL value="@../../css/crud.css" />
+    </stylesheets>
+    <children>
+        <VBox alignment="CENTER" spacing="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0">
+            <children>
+                <Label text="Update Teacher"  />
+                <TextField fx:id="firstNameField" promptText="First Name" />
+                <TextField fx:id="lastNameField" promptText="Last Name" />
+                <TextField fx:id="phoneField" promptText="Phone" />
+                <TextField fx:id="addressField" promptText="Address" />
+                <ChoiceBox fx:id="genderChoiceBox">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Male" />
+                            <String fx:value="Female" />
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+                <HBox spacing="10.0" alignment="CENTER">
+                    <Button fx:id="saveButton" text="Save" onAction="#saveTeacher" />
+                    <Button fx:id="cancelButton" text="Cancel" onAction="#cancel" />
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

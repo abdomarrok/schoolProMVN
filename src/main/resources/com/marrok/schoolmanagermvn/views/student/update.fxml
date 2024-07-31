@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
 <?import java.lang.String?>
-<GridPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.marrok.schoolmanagermvn.controllers.student.UpdateController"
-          hgap="10" vgap="15" alignment="CENTER" styleClass="background">
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="CENTER" hgap="10" styleClass="background" vgap="15" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.UpdateController">
 
     <columnConstraints>
         <ColumnConstraints prefWidth="100" />
@@ -16,33 +21,26 @@
     </columnConstraints>
 
     <children>
-        <Label fx:id="titleLabel" alignment="CENTER" styleClass="titleLabel" text="Update Student"
-               GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+        <Label fx:id="titleLabel" alignment="CENTER" styleClass="titleLabel" text="Update Student" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
 
-        <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" styleClass="lbl" text="First Name:"
-               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+        <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" styleClass="lbl" text="First Name:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
         <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Last Name:"
-               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+        <Label alignment="CENTER" styleClass="lbl" text="Last Name:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
         <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Contact:"
-               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+        <Label alignment="CENTER" styleClass="lbl" text="Contact:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
         <TextField fx:id="contactField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Year:"
-               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+        <Label alignment="CENTER" styleClass="lbl" text="Year:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
         <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Gender:"
-               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-        <ComboBox fx:id="genderComboBox" prefHeight="23.0" prefWidth="211.0"
-                  GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+        <ComboBox fx:id="genderComboBox" prefWidth="261.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Male" />
@@ -51,18 +49,32 @@
             </items>
         </ComboBox>
 
-        <Button onAction="#updateStudent" prefHeight="26.0" prefWidth="97.0" text="Update"
-                GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+        <Button onAction="#updateStudent" prefHeight="26.0" prefWidth="97.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
             <styleClass>
                 <String fx:value="crud-update" />
             </styleClass>
         </Button>
 
-        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel"
-                GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="6">
             <styleClass>
                 <String fx:value="crud-delete" />
             </styleClass>
         </Button>
     </children>
+    <stylesheets>
+        <URL value="@../../css/all.css" />
+        <URL value="@../../css/crud.css" />
+    </stylesheets>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
 </GridPane>

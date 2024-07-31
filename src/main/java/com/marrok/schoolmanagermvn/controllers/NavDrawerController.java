@@ -22,16 +22,6 @@ import java.util.logging.Logger;
 public class NavDrawerController implements Initializable {
 
 
-    @FXML
-    private JFXButton setting_btn;
-    @FXML
-    private JFXButton students_btn;
-    @FXML
-    private JFXButton dashboard_btn;
-    @FXML
-    private JFXButton classes_btn;
-    @FXML
-    private JFXButton timetable_btn;
 
     /**
      * Initializes the controller class.
@@ -50,6 +40,11 @@ public class NavDrawerController implements Initializable {
     public void goDashboard(ActionEvent event) {
         System.out.println("NavDrawerController.goDashboard");
         loadScene("/com/marrok/schoolmanagermvn/views/dashboard/dashboard.fxml", event);
+    }
+
+    public void goTeachers(ActionEvent event) {
+        System.out.println("NavDrawerController.goTeachers");
+        loadScene("/com/marrok/schoolmanagermvn/views/teacher/teacher_view.fxml", event);
     }
     private void loadScene(String resourcePath, ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resourcePath));

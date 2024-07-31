@@ -1,6 +1,7 @@
 package com.marrok.schoolmanagermvn.util;
 
 import com.marrok.schoolmanagermvn.model.Student;
+import com.marrok.schoolmanagermvn.model.Teacher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -251,5 +252,96 @@ public class DatabaseHelper {
         }
         return 0;
     }
+
+
+    public boolean addTeacher(Teacher teacher) {
+        String query = "INSERT INTO teacher (fname, lname, phone, gender, address) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setString(1, teacher.getFname());
+            stmt.setString(2, teacher.getLname());
+            stmt.setInt(3, teacher.getPhone());
+            stmt.setBoolean(4, teacher.getGender());
+            stmt.setString(5, teacher.getAddress());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+    public boolean updateTeacher(Teacher teacher) {
+        String query = "UPDATE teacher SET fname = ?, lname = ?, phone = ?, gender = ?, address = ? WHERE teacher_ID  = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setString(1, teacher.getFname());
+            stmt.setString(2, teacher.getLname());
+            stmt.setInt(3, teacher.getPhone());
+            stmt.setBoolean(4, teacher.getGender());
+            stmt.setString(5, teacher.getAddress());
+            stmt.setInt(6, teacher.getId());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteTeacher(int id) {
+        String query = "DELETE FROM teacher WHERE teacher_ID = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ObservableList<Teacher> getTeachers() throws SQLException {
+        ObservableList<Teacher> teachers = FXCollections.observableArrayList();
+        String query = "SELECT * FROM teacher";
+        try (PreparedStatement stmt = cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Teacher teacher = new Teacher(
+                        rs.getInt("teacher_ID"),
+                        rs.getString("fname"),
+                        rs.getString("lname"),
+                        rs.getInt("phone"),
+                        rs.getString("address"),
+                        rs.getBoolean("gender")
+
+                );
+                teachers.add(teacher);
+            }
+        }
+        return teachers;
+    }
+
+    public List<String> getRecommendedTeacherFirstNames() throws SQLException {
+        List<String> names = new ArrayList<>();
+        String query = "SELECT DISTINCT fname FROM teacher";
+        try (PreparedStatement stmt = cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                names.add(rs.getString("fname"));
+            }
+        }
+        return names;
+    }
+
+    public List<String> getRecommendedTeacherLastNames() throws SQLException {
+        List<String> names = new ArrayList<>();
+        String query = "SELECT DISTINCT lname FROM teacher";
+        try (PreparedStatement stmt = cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                names.add(rs.getString("lname"));
+            }
+        }
+        return names;
+    }
+}
+
+
+
 
