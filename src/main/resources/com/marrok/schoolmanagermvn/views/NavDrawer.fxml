@@ -5,36 +5,37 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<VBox alignment="CENTER" minWidth="200.0" styleClass="drawer_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.NavDrawerController">
+<?import javafx.scene.control.Button?>
+<VBox alignment="CENTER" styleClass="drawer_background" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.NavDrawerController">
     <stylesheets>
-<!--        <String fx:value="/com/marrok/schoolmanagermvn/css/spec/darcula.css"/>-->
         <String fx:value="/com/marrok/schoolmanagermvn/css/all.css" />
     </stylesheets>
     <children>
-        <JFXButton fx:id="dashboard_btn" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goDashboard" styleClass="jfxbtn" text="Dashboard">
+        <Button fx:id="dashboard_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" minWidth="200.0" onAction="#goDashboard" styleClass="jfxbtn" text="Dashboard">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-dashboard" iconSize="24" />
             </graphic>
-        </JFXButton>
-        <JFXButton fx:id="students_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" minWidth="200.0" onAction="#goStudents" styleClass="jfxbtn" text="Students">
+        </Button>
+        <Button fx:id="students_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="10.0" minWidth="200.0" onAction="#goStudents" styleClass="jfxbtn" text="Students">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
-        </JFXButton>
-        <JFXButton fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="45.0" minWidth="200.0" onAction="#goTeachers" ripplerFill="WHITE" styleClass="jfxbtn" text="Teachers">
+        </Button>
+        <Button fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="45.0" minWidth="200.0" onAction="#goTeachers"  styleClass="jfxbtn" text="Teachers">
             <graphic>
-                <FontIcon iconColor="white" iconLiteral="fa-university" iconSize="24" />
+                <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
-        </JFXButton>
-        <JFXButton fx:id="timetable_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0" ripplerFill="WHITE" styleClass="jfxbtn" text="Timetable">
+        </Button>
+        <Button fx:id="modules_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0"  onAction="#goModules" styleClass="jfxbtn" text="Modulls">
             <graphic>
-                <FontIcon iconColor="white" iconLiteral="fa-calendar" iconSize="24" />
+                <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
             </graphic>
-        </JFXButton>
-        <JFXButton fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="115.0" minWidth="200.0" ripplerFill="WHITE" styleClass="jfxbtn" text="Settings">
+        </Button>
+        <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="115.0" minWidth="200.0"  styleClass="jfxbtn" text="Settings">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-cog" iconSize="24" />
             </graphic>
-        </JFXButton>
+        </Button>
     </children>
 </VBox>

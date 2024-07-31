@@ -13,7 +13,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="10" styleClass="background" vgap="15" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.AddController">
+<GridPane hgap="10" styleClass="background" vgap="15" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.student.AddController">
 
     <columnConstraints>
         <ColumnConstraints prefWidth="120" />

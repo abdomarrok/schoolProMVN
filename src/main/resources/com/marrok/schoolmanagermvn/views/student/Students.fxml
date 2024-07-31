@@ -16,7 +16,8 @@
 <?import javafx.scene.text.Font?>
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
+<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
     <stylesheets>
 
 <!--        <URL value="@../../css/spec/darcula.css" />-->

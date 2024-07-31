@@ -12,7 +12,8 @@
 
 <?import java.net.URL?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<AnchorPane fx:id="background" prefHeight="517.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.signin.SignInController">
+<AnchorPane fx:id="background" prefHeight="517.0" prefWidth="505.0" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.signin.SignInController">
     <stylesheets>
 <!--        <URL value="@../../css/all.css"/>-->
         <URL value="@../../css/spec/darcula.css"/>

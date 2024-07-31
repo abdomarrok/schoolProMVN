@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.module.AddController">
+    <children>
+        <TextField fx:id="nameField" layoutX="14.0" layoutY="14.0" promptText="Module Name" />
+        <Button fx:id="saveButton" layoutX="14.0" layoutY="50.0" onAction="#saveModule" text="Save" />
+    </children>
+</AnchorPane>

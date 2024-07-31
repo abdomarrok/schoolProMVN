@@ -1,5 +1,6 @@
 package com.marrok.schoolmanagermvn.util;
 
+import com.marrok.schoolmanagermvn.model.Module;
 import com.marrok.schoolmanagermvn.model.Student;
 import com.marrok.schoolmanagermvn.model.Teacher;
 import javafx.collections.FXCollections;
@@ -339,6 +340,66 @@ public class DatabaseHelper {
             }
         }
         return names;
+    }
+
+    public ObservableList<Module> getModules() throws SQLException {
+        ObservableList<Module> modules = FXCollections.observableArrayList();
+        String query = "SELECT module_id , name FROM module"; // Ensure this matches your table name
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("module_id");
+                String name = rs.getString("name");
+                modules.add(new Module(id, name));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+            throw e;
+        }
+
+        return modules;
+    }
+
+    public boolean addModule(Module module) throws SQLException {
+        String query = "INSERT INTO module (name) VALUES (?)";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setString(1, module.getName());
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+            throw e;
+        }
+    }
+
+    public boolean updateModule(Module module) throws SQLException {
+        String query = "UPDATE module SET name = ? WHERE module_id = ?";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setString(1, module.getName());
+            stmt.setInt(2, module.getId());
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+            throw e;
+        }
+    }
+
+    public boolean deleteModule(int moduleId) throws SQLException {
+        String query = "DELETE FROM module WHERE module_id = ?";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, moduleId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+            throw e;
+        }
     }
 }
 

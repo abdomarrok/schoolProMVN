@@ -24,5 +24,7 @@ module com.marrok.schoolmanagermvn {
     opens com.marrok.schoolmanagermvn.model to javafx.base;
     exports com.marrok.schoolmanagermvn.controllers.teacher to javafx.fxml;
     opens com.marrok.schoolmanagermvn.controllers.teacher;
+    exports com.marrok.schoolmanagermvn.controllers.module to javafx.fxml;
+    opens com.marrok.schoolmanagermvn.controllers.module;
 
 }
