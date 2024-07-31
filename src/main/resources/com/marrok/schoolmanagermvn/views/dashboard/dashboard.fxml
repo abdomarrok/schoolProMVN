@@ -12,6 +12,8 @@
    <stylesheets>
 <!--      <URL value="@../../css/spec/darcula.css" />-->
       <URL value="@../../css/all.css" />
+      <URL value="@../../css/tableview.css" />
+      <URL value="@../../css/chart.css" />
 
    </stylesheets>
    <center>
@@ -35,7 +37,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="72.0" layoutY="20.0" text="500" textFill="WHITE">
+                        <Label fx:id="totalStudentsLabel" alignment="CENTER" layoutX="72.0" layoutY="20.0" text="500" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>

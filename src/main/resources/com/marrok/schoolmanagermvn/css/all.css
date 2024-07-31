@@ -15,6 +15,18 @@ red FA0C0C
     -fx-background-color: #434343;
 }
 
+.lbl {
+    -fx-font-family: 'Andalus';
+    -fx-font-size: 20px;
+}
+
+.title_dashboard ,.titleLabel {
+    -fx-font-family: 'Andalus';
+    -fx-font-size: 60px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
 /* Text field background color */
 .text-field {
     -fx-background-color: #C4C4C4;
@@ -93,4 +105,16 @@ red FA0C0C
 .jfxbtn:hover {
     -fx-background-color: #E7267A; /* Change background color on hover */
     -fx-text-fill: white; /* Keep text color white on hover */
+}
+
+.search-bar {
+    -fx-background-color: #C4C4C4;
+    -fx-border-color: rgba(24, 31, 199, 0.29);
+    -fx-border-width: 2px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: black; /* Adjust as needed for visibility */
+}
+
+.search-bar .prompt-text {
+    -fx-text-fill: #8B8383;
 }

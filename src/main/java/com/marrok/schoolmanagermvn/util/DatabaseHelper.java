@@ -102,8 +102,76 @@ public class DatabaseHelper {
         }
 
         return students;
+
+    }
+    public boolean addStudent(Student student) {
+        String query = "INSERT INTO student (fname, lname, year, contact, gender, class_rooms) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setString(1, student.getFname());
+            stmt.setString(2, student.getLname());
+            stmt.setInt(3, student.getYear());
+            stmt.setInt(4, student.getContact());
+            stmt.setBoolean(5, student.getGender()); // Assuming gender is stored as a boolean
+            stmt.setInt(6, student.getClassRooms()); // Adjust if class_rooms is not used or needed
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if at least one row was inserted
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log the exception or handle it as needed
+            return false;
+        }
     }
 
+    // New method for updating a student record
+    public boolean updateStudent(Student student) {
+        String updateQuery = "UPDATE student SET fname = ?, lname = ?, year = ?, contact = ?, gender = ?, class_rooms = ? WHERE stud_ID = ?";
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(updateQuery)) {
+            stmt.setString(1, student.getFname());
+            stmt.setString(2, student.getLname());
+            stmt.setInt(3, student.getYear());
+            stmt.setInt(4, student.getContact());
+            stmt.setBoolean(5, student.getGender());
+            stmt.setInt(6, student.getClassRooms());
+            stmt.setInt(7, student.getId());
+
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log error or handle it accordingly
+            return false;
+        }
+    }
+
+    public boolean deleteStudent(int studentId) {
+        String query = "DELETE FROM student WHERE stud_ID = ?";
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if at least one row was deleted
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log the exception or handle it as needed
+            return false;
+        }
+    }
+
+
+    public int getTotalStudentCount() throws SQLException {
+        String query = "SELECT COUNT(*) AS total FROM student";
+        try (PreparedStatement preparedStatement = this.cnn.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        }
+        return 0; // Return 0 if no data is found
+    }
 
 
         // Existing connection and methods...
@@ -146,13 +214,13 @@ public class DatabaseHelper {
 
         public List<Integer> getClassrooms() {
             List<Integer> classrooms = new ArrayList<>();
-            String query = "SELECT DISTINCT classRooms FROM student WHERE classRooms IS NOT NULL";
+            String query = "SELECT DISTINCT class_rooms FROM student WHERE class_rooms IS NOT NULL";
 
             try (PreparedStatement preparedStatement = cnn.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 while (resultSet.next()) {
-                    classrooms.add(resultSet.getInt("classRooms"));
+                    classrooms.add(resultSet.getInt("class_rooms"));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -161,5 +229,27 @@ public class DatabaseHelper {
 
             return classrooms;
         }
+
+    public int getTotalClasses() throws SQLException {
+        String query = "SELECT COUNT(DISTINCT class_rooms) FROM student"; // Adjust query as needed
+        try (PreparedStatement statement = cnn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    public int getTotalTeachers() throws SQLException {
+        String query = "SELECT COUNT(*) FROM teacher"; // Adjust query as needed
+        try (PreparedStatement statement = cnn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
+    }
     }
 

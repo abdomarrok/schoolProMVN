@@ -6,17 +6,21 @@ import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController;
 import com.marrok.schoolmanagermvn.model.Student;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
+import com.marrok.schoolmanagermvn.util.GeneralUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -32,6 +36,8 @@ import com.dlsc.gemsfx.FilterView;
 import com.dlsc.gemsfx.FilterView.Filter;
 import com.dlsc.gemsfx.FilterView.FilterGroup;
 import fr.brouillard.oss.cssfx.CSSFX;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class StudentsController implements Initializable {
 
@@ -49,6 +55,11 @@ public class StudentsController implements Initializable {
     private ObservableList<Student> studentsModels = FXCollections.observableArrayList();
     private DatabaseHelper dbHelper;
 
+
+    // Add any initialization or event handling logic here
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -63,60 +74,160 @@ public class StudentsController implements Initializable {
         CSSFX.start();
     }
 
-    private void loadFilter() {
-        filterView.setTextFilterProvider(text -> student ->
-                student.getFname().toLowerCase().contains(text.toLowerCase()) ||
-                        student.getLname().toLowerCase().contains(text.toLowerCase())
-        );
+    @FXML
+    private void addStudent(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/marrok/schoolmanagermvn/views/student/add.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
 
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Add Student");
+            stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png")));
+            AddController controller = loader.getController();
+            controller.setController(this);
+
+            stage.showAndWait();
+            // Refresh the table data after adding a student
+            loadStudentsFromDatabase();
+        } catch (IOException e) {
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not open the add student form.");
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void updateStudent(ActionEvent event) {
+        Student selectedStudent = tbData.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/marrok/schoolmanagermvn/views/student/update.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(loader.load());
+                stage.setScene(scene);
+
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setTitle("Update Student");
+                stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png")));
+                UpdateController controller = loader.getController();
+                controller.setStudent(selectedStudent);
+                controller.setController(this);
+
+                stage.showAndWait();
+                // Refresh the table data after updating the student
+                loadStudentsFromDatabase();
+            } catch (IOException e) {
+                GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Could not open the update student form.");
+                e.printStackTrace();
+            }
+        } else {
+            GeneralUtil.showAlert(Alert.AlertType.WARNING, "No Selection", "No Student SelectedPlease select a student to update.");
+        }
+    }
+
+
+    @FXML
+    private void deleteStudent(ActionEvent event) {
+        // Get the selected student from the TableView
+        Student selectedStudent = tbData.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent == null) {
+            // No student is selected
+            GeneralUtil.showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a student to delete.");
+            return;
+        }
+
+        // Confirm deletion
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete the selected student?");
+
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            // Proceed with deletion
+            boolean success = dbHelper.deleteStudent(selectedStudent.getId());
+
+            if (success) {
+                // Refresh the table
+                loadStudentsFromDatabase();
+                GeneralUtil.showAlert(Alert.AlertType.INFORMATION, "Deletion Successful", "The student was deleted successfully.");
+            } else {
+                GeneralUtil.showAlert(Alert.AlertType.ERROR, "Deletion Failed", "Failed to delete the student.");
+            }
+        }
+    }
+
+
+    private void loadFilter() {
+        // Enhanced text filter based on multiple fields
+        filterView.setTextFilterProvider(text -> student -> {
+            if (text == null || text.isEmpty()) {
+                return true; // Show all students if no text filter is applied
+            }
+            String lowerCaseText = text.toLowerCase();
+            return student.getFname().toLowerCase().contains(lowerCaseText) ||
+                    student.getLname().toLowerCase().contains(lowerCaseText) ||
+                    String.valueOf(student.getContact()).contains(lowerCaseText) ||
+                    String.valueOf(student.getYear()).contains(lowerCaseText) ||
+                    (student.getGender() ? "male".contains(lowerCaseText) : "female".contains(lowerCaseText));
+        });
+
+        // Filter groups as previously defined
         FilterGroup<Student> firstNameGroup = new FilterGroup<>("First Name");
         FilterGroup<Student> lastNameGroup = new FilterGroup<>("Last Name");
         FilterGroup<Student> classroomGroup = new FilterGroup<>("Classroom");
 
-        try {
-            DatabaseHelper dbHelper = new DatabaseHelper();
+        FilterGroup<Student> genderGroup = new FilterGroup<>("Gender");
 
-            // Fetch recommended first names
-            List<String> recommendedFirstNames = dbHelper.getRecommendedFirstNames();
-            for (String firstName : recommendedFirstNames) {
-                firstNameGroup.getFilters().add(new Filter<>(firstName) {
-                    @Override
-                    public boolean test(Student student) {
-                        return firstName.equals(student.getFname());
-                    }
-                });
-            }
-
-            // Fetch recommended last names
-            List<String> recommendedLastNames = dbHelper.getRecommendedLastNames();
-            for (String lastName : recommendedLastNames) {
-                lastNameGroup.getFilters().add(new Filter<>(lastName) {
-                    @Override
-                    public boolean test(Student student) {
-                        return lastName.equals(student.getLname());
-                    }
-                });
-            }
-
-            // Fetch classrooms
-            List<Integer> classrooms = dbHelper.getClassrooms();
-            for (Integer classroom : classrooms) {
-                classroomGroup.getFilters().add(new Filter<>("Classroom " + classroom) {
-                    @Override
-                    public boolean test(Student student) {
-                        return student.getClassRooms() == classroom;
-                    }
-                });
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle exception
+        List<String> recommendedFirstNames = dbHelper.getRecommendedFirstNames();
+        for (String firstName : recommendedFirstNames) {
+            firstNameGroup.getFilters().add(new Filter<>(firstName) {
+                @Override
+                public boolean test(Student student) {
+                    return firstName.equalsIgnoreCase(student.getFname());
+                }
+            });
         }
 
-        filterView.getFilterGroups().setAll(firstNameGroup, lastNameGroup, classroomGroup);
+        List<String> recommendedLastNames = dbHelper.getRecommendedLastNames();
+        for (String lastName : recommendedLastNames) {
+            lastNameGroup.getFilters().add(new Filter<>(lastName) {
+                @Override
+                public boolean test(Student student) {
+                    return lastName.equalsIgnoreCase(student.getLname());
+                }
+            });
+        }
 
-        loadStudentsFromDatabase(); // Load students from the database
+        List<Integer> classrooms = dbHelper.getClassrooms();
+        for (Integer classroom : classrooms) {
+            classroomGroup.getFilters().add(new Filter<>("Classroom " + classroom) {
+                @Override
+                public boolean test(Student student) {
+                    return student.getClassRooms() == classroom;
+                }
+            });
+        }
+
+
+        genderGroup.getFilters().add(new Filter<>("Male") {
+            @Override
+            public boolean test(Student student) {
+                return student.getGender();
+            }
+        });
+        genderGroup.getFilters().add(new Filter<>("Female") {
+            @Override
+            public boolean test(Student student) {
+                return !student.getGender();
+            }
+        });
+
+        filterView.getFilterGroups().setAll(firstNameGroup, lastNameGroup, classroomGroup, genderGroup);
+
+        loadStudentsFromDatabase();
 
         SortedList<Student> sortedList = new SortedList<>(filterView.getFilteredItems());
         tbData.setItems(sortedList);
@@ -165,7 +276,7 @@ public class StudentsController implements Initializable {
         });
     }
 
-    private void loadStudentsFromDatabase() {
+    public void loadStudentsFromDatabase() {
         try {
             studentsModels = dbHelper.getStudents(); // Load students from the database
             filterView.getItems().setAll(studentsModels); // Set the loaded students to the filter view

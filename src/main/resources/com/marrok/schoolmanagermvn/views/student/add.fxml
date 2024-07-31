@@ -1,14 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.marrok.schoolmanagermvn.controllers.student.AddController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<GridPane hgap="10" styleClass="background" vgap="15" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.marrok.schoolmanagermvn.controllers.student.AddController">
+
+    <columnConstraints>
+        <ColumnConstraints prefWidth="120" />
+        <ColumnConstraints />
+    </columnConstraints>
+
+    <children>
+        <Label fx:id="titleLabel" alignment="CENTER" styleClass="titleLabel" text="Add Student" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+
+        <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" styleClass="lbl" text="First Name:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+        <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label alignment="CENTER" styleClass="lbl" text="Last Name:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+        <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label alignment="CENTER" styleClass="lbl" text="Contact:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+        <TextField fx:id="contactField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label alignment="CENTER" styleClass="lbl" text="Year:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+        <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+        <ComboBox fx:id="genderComboBox" prefHeight="23.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Male"/>
+                    <String fx:value="Female"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <Button onAction="#addStudent" prefHeight="26.0" prefWidth="97.0" text="Add" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+            <styleClass>
+                <String fx:value="crud-add" />
+            </styleClass>
+        </Button>
+
+        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+            <styleClass>
+
+                <String fx:value="crud-delete" />
+            </styleClass>
+        </Button>
+    </children>
+
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+
+    <stylesheets>
+        <URL value="@../../css/all.css" />
+        <URL value="@../../css/crud.css" />
+    </stylesheets>
 
 </GridPane>

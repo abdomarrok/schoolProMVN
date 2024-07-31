@@ -1,16 +1,21 @@
 package com.marrok.schoolmanagermvn.controllers.dashboard;
+
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import com.marrok.schoolmanagermvn.model.Student;
+import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +24,8 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,9 +33,9 @@ import java.util.logging.Logger;
 public class DashboardController implements Initializable {
 
     public TableView<Student> tbData;
-    public TableColumn<Student,String> gender;
+    public TableColumn<Student, String> gender;
     public TableColumn<Student, Integer> contact;
-    public TableColumn<Student,Integer> year;
+    public TableColumn<Student, Integer> year;
     public TableColumn<Student, Integer> id;
     public TableColumn<Student, String> firstName;
     public TableColumn<Student, String> lastName;
@@ -38,19 +45,29 @@ public class DashboardController implements Initializable {
 
     public PieChart pieChart;
 
+    private ObservableList<Student> studentsModels = FXCollections.observableArrayList();
+    private DatabaseHelper dbHelper;
+    @FXML
+    private Label totalStudentsLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            dbHelper = new DatabaseHelper();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
         loadDrawer();
         loadChart();
-        loadStudents();
+        loadStudents(); // Load students from the database
     }
 
     private void loadDrawer() {
         try {
-            // TODO
             VBox box = FXMLLoader.load(getClass().getResource("/com/marrok/schoolmanagermvn/views/NavDrawer.fxml"));
             drawer.setSidePane(box);
-            drawer.setMinWidth(0); // this is the new code added
+            drawer.setMinWidth(0); // Set initial min width to 0
 
         } catch (IOException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,59 +75,94 @@ public class DashboardController implements Initializable {
 
         HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
         task.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
-            drawer.toggle();
-        });
-        drawer.setOnDrawerOpening((event) -> {
+        hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> drawer.toggle());
+
+        drawer.setOnDrawerOpening(event -> {
             task.setRate(task.getRate() * -1);
             task.play();
-            drawer.setMinWidth(220);
+            drawer.setMinWidth(220); // Set min width to 220 when opening
         });
-        drawer.setOnDrawerClosed((event) -> {
+
+        drawer.setOnDrawerClosed(event -> {
             task.setRate(task.getRate() * -1);
             task.play();
-            drawer.setMinWidth(0);
+            drawer.setMinWidth(0); // Reset min width to 0 when closed
         });
     }
 
-    private void loadChart()
-    {
+    private void loadChart() {
+        try {
+            int totalClasses = dbHelper.getTotalClasses();
+            int totalTeachers = dbHelper.getTotalTeachers();
+            System.out.println("DashboardController.loadChart");
+            System.out.println("totalClasses: " + totalClasses);
+            System.out.println("totalTeachers: " + totalTeachers);
 
-        PieChart.Data slice1 = new PieChart.Data("Classes", 213);
-        PieChart.Data slice2 = new PieChart.Data("Attendance"  , 67);
-        PieChart.Data slice3 = new PieChart.Data("Teachers" , 36);
+            // Clear existing data
+            pieChart.getData().clear();
 
-        pieChart.getData().add(slice1);
-        pieChart.getData().add(slice2);
-        pieChart.getData().add(slice3);
+            // Add new data
+            pieChart.getData().add(new PieChart.Data("Classes", totalClasses));
+            pieChart.getData().add(new PieChart.Data("Teachers", totalTeachers));
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
     }
+    private void loadStudents() {
+        try {
+            // Fetch recommended first names, last names, and classrooms
+            List<String> recommendedFirstNames = dbHelper.getRecommendedFirstNames();
+            List<String> recommendedLastNames = dbHelper.getRecommendedLastNames();
+            List<Integer> classrooms = dbHelper.getClassrooms();
 
+            // Example of how to use the recommended data (you can adjust as needed)
+            for (String firstName : recommendedFirstNames) {
+                // Do something with the recommended first names
+            }
 
+            for (String lastName : recommendedLastNames) {
+                // Do something with the recommended last names
+            }
 
-    private ObservableList<Student> studentsModels = FXCollections.observableArrayList(
+            for (Integer classroom : classrooms) {
+                // Do something with the classrooms
+            }
 
-            new Student(1,"Amos", "Chepchieng",2004,555555,true,5),
-            new Student(2,"Amos2", "Chepchieng2",2005,555555,false,5),
-            new Student(3,"Amos3", "Chepchieng3",2006,555555,true,5)
-    );
+            // Fetch students from the database
+            studentsModels = dbHelper.getStudents();
+            tbData.setItems(studentsModels);
+            updateTotalStudentCount();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle exception
+        }
 
-    private void loadStudents()
-    {
+        // Initialize table columns
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstName.setCellValueFactory(new PropertyValueFactory<>("fname"));
         lastName.setCellValueFactory(new PropertyValueFactory<>("lname"));
-        gender.setCellValueFactory(celldata->{
-           if( celldata.getValue().getGender()){
-               return new SimpleStringProperty("male");
-           }else {
-               return  new SimpleStringProperty("female");
-           }
+        gender.setCellValueFactory(celldata -> {
+            if (celldata.getValue().getGender()) {
+                return new SimpleStringProperty("male");
+            } else {
+                return new SimpleStringProperty("female");
+            }
         });
         contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
-        tbData.setItems(studentsModels);
+    }
+
+    private void updateTotalStudentCount() {
+        try {
+            int totalStudents = dbHelper.getTotalStudentCount();
+            totalStudentsLabel.setText(String.valueOf(totalStudents));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
     }
 
     public void exit(MouseEvent mouseEvent) {

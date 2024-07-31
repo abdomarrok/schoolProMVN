@@ -1,0 +1,51 @@
+
+/* Add Button Style */
+.crud-add {
+    -fx-background-color: #4CAF50; /* Green background for add */
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 1);
+}
+
+/* Hover effect for Add Button */
+.crud-add:hover {
+    -fx-background-color: #45a049; /* Darker green on hover */
+    -fx-text-fill: white;
+}
+
+/* Update Button Style */
+.crud-update {
+    -fx-background-color: #2196F3; /* Blue background for update */
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 1);
+}
+
+/* Hover effect for Update Button */
+.crud-update:hover {
+    -fx-background-color: #0b7dda; /* Darker blue on hover */
+    -fx-text-fill: white;
+}
+
+/* Delete Button Style */
+.crud-delete {
+    -fx-background-color: #FA0C0C; /* Red background for delete */
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 1);
+}
+
+/* Hover effect for Delete Button */
+.crud-delete:hover {
+    -fx-background-color: #FA0C0C; /* Darker red on hover */
+    -fx-text-fill: white;
+}
