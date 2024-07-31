@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,24 +74,31 @@ public class SignInController implements Initializable {
 
     private void showDashboard(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/marrok/schoolmanagermvn/views/dashboard/dashboard.fxml"));
+        Parent root = null;
         try {
             root = loader.load();
-
         } catch (IOException ex) {
             Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        scene = new Scene(root);
-        scene.setCursor(Cursor.HAND);
+        if (root != null) {
+            Scene scene = new Scene(root);
+            scene.setCursor(Cursor.HAND);
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+            // Create a new stage if a new style is needed
+            Stage newStage = new Stage();
+            newStage.initStyle(StageStyle.DECORATED); // Set style before showing
+            newStage.setScene(scene);
+            newStage.setResizable(true);
+            newStage.centerOnScreen();
 
-        stage.setResizable(false);
-        stage.centerOnScreen();
-       // stage.initStyle(StageStyle.UNDECORATED);
-        stage.show();
+            newStage.show();
+
+            // Optionally, close the current stage
+            ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+        }
     }
+
 
 
     public void exit(MouseEvent mouseEvent) {

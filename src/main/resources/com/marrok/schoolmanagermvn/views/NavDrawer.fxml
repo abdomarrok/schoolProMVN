@@ -32,6 +32,11 @@
                 <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
             </graphic>
         </Button>
+        <Button fx:id="session_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="80.0" minWidth="200.0"  onAction="#goSession" styleClass="jfxbtn" text="Session">
+            <graphic>
+                <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
+            </graphic>
+        </Button>
         <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" layoutX="10.0" layoutY="115.0" minWidth="200.0"  styleClass="jfxbtn" text="Settings">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-cog" iconSize="24" />

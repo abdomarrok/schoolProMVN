@@ -1,10 +1,12 @@
 package com.marrok.schoolmanagermvn.util;
 
 import com.marrok.schoolmanagermvn.model.Module;
+import com.marrok.schoolmanagermvn.model.Session_model;
 import com.marrok.schoolmanagermvn.model.Student;
 import com.marrok.schoolmanagermvn.model.Teacher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -401,6 +403,108 @@ public class DatabaseHelper {
             throw e;
         }
     }
+
+    public ObservableList<Session_model> getSessions() {
+        ObservableList<Session_model> sessions = FXCollections.observableArrayList();
+        String query = "SELECT id, module_ID, teacher_ID FROM course_session"; // Replace 'session' with the actual table name if different
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int moduleId = rs.getInt("module_ID");
+                int teacherId = rs.getInt("teacher_ID");
+
+                Session_model session = new Session_model(id, moduleId, teacherId);
+                sessions.add(session);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+
+        return sessions;
+    }
+
+    // Fetch module name by ID
+    public String getModuleById(int moduleId)  {
+        String query = "SELECT name FROM module WHERE module_id = ?";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, moduleId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("name");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null; // Or handle as appropriate if no result found
+    }
+
+    // Fetch teacher name by ID
+    public String getTeacherFullNameById(int teacherId)  {
+        String query = "SELECT * FROM teacher WHERE teacher_ID = ?";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, teacherId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("lname") +" "+rs.getString("fname");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null; // Or handle as appropriate if no result found
+    }
+
+    public boolean addSession(int moduleId, int teacherId) {
+        String query = "INSERT INTO course_session (module_ID, teacher_ID) VALUES (?, ?)";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, moduleId);
+            stmt.setInt(2, teacherId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if insertion was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            GeneralUtil.showAlert(Alert.AlertType.ERROR,"ERROR",e.getMessage());
+            // Handle exception or throw a custom exception
+            return false;
+        }
+    }
+
+    public boolean updateSession(int sessionId, int moduleId, int teacherId)  {
+        String query = "UPDATE course_session SET module_ID = ?, teacher_ID = ? WHERE id = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, moduleId);
+            stmt.setInt(2, teacherId);
+            stmt.setInt(3, sessionId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                throw e;
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+    public boolean deleteSession(int sessionId) throws SQLException {
+        String query = "DELETE FROM course_session WHERE id = ?";
+        try (PreparedStatement stmt = cnn.prepareStatement(query)) {
+            stmt.setInt(1, sessionId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 }
 
 

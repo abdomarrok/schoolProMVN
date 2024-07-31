@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.dlsc.gemsfx.FilterView?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.dlsc.gemsfx.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
+<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.student.StudentsController">
     <stylesheets>
 
 <!--        <URL value="@../../css/spec/darcula.css" />-->
@@ -41,7 +31,6 @@
                         <Font size="13.0" />
                     </font>
                 </Label>
-              <FontIcon iconColor="WHITE" iconLiteral="fa-times" layoutX="905.0" layoutY="35.0" onMouseClicked="#exit" />
             </children>
         </Pane>
     </top>
@@ -61,11 +50,11 @@
                     <children>
                         <!-- FilterView, placed at the top  filterText="" subtitle="Use the filters below to narrow down the list of students"  -->
 
-                        <FilterView fx:id="filterView"  title="Filter Students" />
+                        <FilterView fx:id="filterView" title="Filter Students" />
                         <HBox alignment="CENTER" spacing="10.0">
-                            <Button fx:id="addButton"  styleClass="crud-add" onAction="#addStudent" text="Add" />
-                            <Button fx:id="updateButton" styleClass="crud-update" onAction="#updateStudent" text="Update" />
-                            <Button fx:id="deleteButton"  styleClass="crud-delete" onAction="#deleteStudent" text="Delete" />
+                            <Button fx:id="addButton" onAction="#addStudent" styleClass="crud-add" text="Add" />
+                            <Button fx:id="updateButton" onAction="#updateStudent" styleClass="crud-update" text="Update" />
+                            <Button fx:id="deleteButton" onAction="#deleteStudent" styleClass="crud-delete" text="Delete" />
                         </HBox>
 
                         <!-- TableView, positioned below FilterView -->

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import org.kordamp.ikonli.javafx.*?>
 
 <BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController">
    <stylesheets>
@@ -141,7 +140,6 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <FontIcon iconColor="WHITE" iconLiteral="fa-times" layoutX="908.0" layoutY="35.0" onMouseClicked="#exit" text="" />
          </children>
       </Pane>
    </top>
