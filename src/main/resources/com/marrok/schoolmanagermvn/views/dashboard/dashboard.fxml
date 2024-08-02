@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.*?>
 <?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -28,7 +29,7 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Pane prefHeight="103.0" prefWidth="200.0" style="-fx-background-color: #3A84C3; -fx-background-radius: 1em;">
+                  <Pane style="-fx-background-color: #3A84C3; -fx-background-radius: 1em;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
                         <Label alignment="CENTER" layoutX="62.0" layoutY="65.0" text="Total Students" textFill="WHITE">
                            <font>
@@ -42,47 +43,50 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane prefHeight="103.0" prefWidth="200.0" style="-fx-background-color: #EEAC4C; -fx-background-radius: 1em;" GridPane.columnIndex="1">
+                  <Pane style="-fx-background-color: #EEAC4C; -fx-background-radius: 1em;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <Label layoutX="67.0" layoutY="70.0" text="Total Hours" textFill="WHITE">
+                        <Label layoutX="51.0" layoutY="69.0" text="Total Inscriptions" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="59.0" layoutY="25.0" text="1000" textFill="WHITE">
+                        <Label fx:id="totalInscription" contentDisplay="CENTER" layoutX="59.0" layoutY="25.0" text="1000" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane prefHeight="103.0" prefWidth="200.0" style="-fx-background-color: #5CB55B; -fx-background-radius: 1em;" GridPane.columnIndex="2">
+                  <Pane style="-fx-background-color: #5CB55B; -fx-background-radius: 1em;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <Label layoutX="62.0" layoutY="70.0" text="Total Lessons" textFill="WHITE">
+                        <Label layoutX="62.0" layoutY="70.0" text="Total Session" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="79.0" layoutY="25.0" text="10" textFill="WHITE">
+                        <Label fx:id="totalClasses" layoutX="79.0" layoutY="25.0" text="10" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
-                  <Pane prefHeight="103.0" prefWidth="200.0" style="-fx-background-color: #D7534E; -fx-background-radius: 1em;" GridPane.columnIndex="3">
+                  <Pane style="-fx-background-color: #D7534E; -fx-background-radius: 1em;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <Label layoutX="57.0" layoutY="70.0" text="Missed Classes" textFill="WHITE">
+                        <Label layoutX="57.0" layoutY="70.0" text="Total Teacher" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="90.0" layoutY="25.0" text="2" textFill="WHITE">
+                        <Label fx:id="totalTeacher" layoutX="90.0" layoutY="25.0" text="2" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="36.0" />
                            </font>
                         </Label>
                      </children>
+                     <padding>
+                        <Insets bottom="20.0" left="10.0" right="10.0" />
+                     </padding>
                   </Pane>
                </children>
             </GridPane>

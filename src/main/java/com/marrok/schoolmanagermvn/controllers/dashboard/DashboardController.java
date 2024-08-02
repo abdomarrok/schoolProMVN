@@ -49,7 +49,12 @@ public class DashboardController implements Initializable {
     private DatabaseHelper dbHelper;
     @FXML
     private Label totalStudentsLabel;
-
+    @FXML
+    private Label totalInscription;
+    @FXML
+    private Label totalClasses;
+    @FXML
+    private Label totalTeacher;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -61,6 +66,7 @@ public class DashboardController implements Initializable {
         loadDrawer();
         loadChart();
         loadStudents(); // Load students from the database
+        updateTotalsCount();
     }
 
     private void loadDrawer() {
@@ -133,7 +139,7 @@ public class DashboardController implements Initializable {
             // Fetch students from the database
             studentsModels = dbHelper.getStudents();
             tbData.setItems(studentsModels);
-            updateTotalStudentCount();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,10 +161,16 @@ public class DashboardController implements Initializable {
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
     }
 
-    private void updateTotalStudentCount() {
+    private void updateTotalsCount() {
         try {
+            int totalclasses=dbHelper.getTotalClasses();
+            int totalInscriptions=dbHelper.getTotalInscriptionCount();
             int totalStudents = dbHelper.getTotalStudentCount();
+            int totalTeachers = dbHelper.getTotalTeachers();
+            totalClasses.setText(String.valueOf(totalclasses));
             totalStudentsLabel.setText(String.valueOf(totalStudents));
+            totalInscription.setText(String.valueOf(totalInscriptions));
+            totalTeacher.setText(String.valueOf(totalTeachers));
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exception

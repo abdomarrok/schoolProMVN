@@ -56,10 +56,6 @@ public class StudentsController implements Initializable {
     private DatabaseHelper dbHelper;
 
 
-    // Add any initialization or event handling logic here
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {

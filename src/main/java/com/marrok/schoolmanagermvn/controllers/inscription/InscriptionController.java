@@ -3,6 +3,7 @@ package com.marrok.schoolmanagermvn.controllers.inscription;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.marrok.schoolmanagermvn.model.Student;
 import com.marrok.schoolmanagermvn.model.StudentInscription;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import com.marrok.schoolmanagermvn.util.GeneralUtil;
@@ -155,7 +156,10 @@ public class InscriptionController implements Initializable {
                 return true;
             }
             String lowerCaseText = text.toLowerCase();
+
             return String.valueOf(inscription.getStudentId()).contains(lowerCaseText) ||
+                    String.valueOf(inscription.getStudentFullName()).contains(lowerCaseText) ||
+                    String.valueOf(inscription.getSessionDetails()).contains(lowerCaseText) ||
                     String.valueOf(inscription.getSessionId()).contains(lowerCaseText) ||
                     inscription.getRegistrationDate().toString().toLowerCase().contains(lowerCaseText) ||
                     inscription.getPrice().toLowerCase().contains(lowerCaseText);
@@ -164,7 +168,59 @@ public class InscriptionController implements Initializable {
         // Add any specific filters or filter groups if needed
         // Example: FilterGroup<Student> group = new FilterGroup<>("Group Name");
         // filterView.getFilterGroups().add(group);
+        FilterGroup<StudentInscription> NameGroup = new FilterGroup<>("Student name");
+        FilterGroup<StudentInscription> genderGroup = new FilterGroup<>("Gender");
+        List<String> recommendedNames = dbHelper.getStudentNames();
+        for (String firstName : recommendedNames) {
+            NameGroup.getFilters().add(new Filter<>(firstName) {
+                @Override
+                public boolean test(StudentInscription studentInscription) {
+                   return firstName.equalsIgnoreCase(studentInscription.getStudentFullName());
+                }
 
+
+            });
+        }
+        genderGroup.getFilters().add(new Filter<>("Male") {
+            @Override
+            public boolean test(StudentInscription studentIns) {
+                Integer studentId = studentIns.getStudentId();
+                if (studentId == null) {
+                    System.out.println("Null studentId for studentInscription: " + studentIns);
+                    return false;
+                }
+                Student student = dbHelper.getStudentById(studentId);
+                if (student == null) {
+                    System.out.println("No student found with ID: " + studentId);
+                    return false;
+                }
+                boolean isMale = student.getGender(); // Assuming true = male
+                System.out.println("Student ID: " + studentId + ", Gender: " + (isMale ? "Male" : "Female"));
+                return isMale;
+            }
+        });
+        genderGroup.getFilters().add(new Filter<>("Female") {
+            @Override
+            public boolean test(StudentInscription studentIns) {
+                Integer studentId = studentIns.getStudentId();
+                if (studentId == null) {
+                    System.out.println("Null studentId for studentInscription: " + studentIns);
+                    return false;
+                }
+                Student student = dbHelper.getStudentById(studentId);
+                if (student == null) {
+                    System.out.println("No student found with ID: " + studentId);
+                    return false;
+                }
+                boolean isMale = !student.getGender(); // Assuming true = male
+                System.out.println("Student ID: " + studentId + ", Gender: " + (isMale ? "Male" : "Female"));
+                return isMale;
+            }
+        });
+
+
+
+        filterView.getFilterGroups().setAll(NameGroup,genderGroup);
         loadInscriptionsFromDatabase();
 
         SortedList<StudentInscription> sortedList = new SortedList<>(filterView.getFilteredItems());
@@ -180,16 +236,23 @@ public class InscriptionController implements Initializable {
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    public void loadInscriptionsFromDatabase() {
-        try {
-            // Fetch the inscriptions along with the full name and session details
-            List<StudentInscription> inscriptions = dbHelper.getAllInscriptionsWithDetails();
-            inscriptionsModels.setAll(inscriptions);
-            filterView.getItems().setAll(inscriptionsModels);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+public void loadInscriptionsFromDatabase() {
+    try {
+        // Fetch the inscriptions along with the full name and session details
+        List<StudentInscription> inscriptions = dbHelper.getAllInscriptionsWithDetails();
+        for (StudentInscription inscription : inscriptions) {
+            System.out.println("Loaded inscription: " + inscription.getId() + ", Student ID: " + inscription.getStudentId());
+            if (inscription.getStudentId() == null) {
+                System.out.println("Warning: Null studentId for inscription ID: " + inscription.getId());
+            }
         }
+        inscriptionsModels.setAll(inscriptions);
+        filterView.getItems().setAll(inscriptionsModels);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
     private void loadDrawer() {
         try {

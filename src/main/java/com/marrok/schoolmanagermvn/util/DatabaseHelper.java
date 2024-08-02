@@ -109,6 +109,33 @@ public class DatabaseHelper {
         return students;
 
     }
+    public Student getStudentById(int studentId) {
+        Student student = null;
+        String query = "SELECT * FROM student WHERE stud_ID = ?"; // Adjust query to match your table schema
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, studentId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt("stud_ID");
+                    String fname = rs.getString("fname");
+                    String lname = rs.getString("lname");
+                    int year = rs.getInt("year");
+                    int contact = rs.getInt("contact");
+                    boolean gender = rs.getBoolean("gender");
+                    int classRooms = rs.getInt("class_rooms");
+
+                    student = new Student(id, fname, lname, year, contact, gender, classRooms);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Log error or handle it accordingly
+        }
+
+        return student;
+    }
+
     public int getStudentIdByName(String name) {
         String query = "SELECT stud_ID FROM student WHERE CONCAT(fname, ' ', lname) = ?";
         try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
@@ -211,6 +238,16 @@ public class DatabaseHelper {
         return 0; // Return 0 if no data is found
     }
 
+    public int  getTotalInscriptionCount()throws SQLException {
+        String query = "SELECT COUNT(*) AS total FROM student_inscription";
+        try (PreparedStatement preparedStatement = this.cnn.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        }
+        return 0; // Return 0 if no data is found
+    }
 
         // Existing connection and methods...
 
@@ -269,7 +306,7 @@ public class DatabaseHelper {
         }
 
     public int getTotalClasses() throws SQLException {
-        String query = "SELECT COUNT(DISTINCT class_rooms) FROM student"; // Adjust query as needed
+        String query = "SELECT COUNT(DISTINCT id) FROM course_session"; // Adjust query as needed
         try (PreparedStatement statement = cnn.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
@@ -690,7 +727,7 @@ public class DatabaseHelper {
         }
     }
     public Map<String, Object> getInscriptionById(int inscriptionId) throws SQLException {
-        String query = "SELECT i.*, s.fname AS student_name, " +
+        String query = "SELECT i.*, CONCAT(s.fname,' ',s.lname) AS student_name, " +
                 "CONCAT('Session ', cs.id, ': ', m.name, ' with ', t.fname, ' ', t.lname) AS session_display_name " +
                 "FROM student_inscription i " +
                 "JOIN student s ON i.student_ID = s.stud_ID " +
@@ -769,7 +806,9 @@ public class DatabaseHelper {
     }
     public ObservableList<StudentInscription> getAllInscriptionsWithDetails() {
         String query = "SELECT si.inscription_ID, " +
+                "si.student_ID, " + // Include student ID
                 "s.stud_ID, CONCAT(s.fname, ' ', s.lname) AS full_name, " +
+                "si.session_ID, " + // Include session ID
                 "cs.id, CONCAT(m.name, ' (', t.teacher_ID, ')') AS session_info, " +
                 "si.registration_date, si.price " +
                 "FROM student_inscription si " +
@@ -782,12 +821,18 @@ public class DatabaseHelper {
         try (PreparedStatement stmt = cnn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
+                // Extract the student ID and session ID from the result set
+                int studentId = rs.getInt("student_ID");
+                int sessionId = rs.getInt("session_ID");
+
                 StudentInscription inscription = new StudentInscription(
-                        rs.getInt("inscription_ID"),
-                        rs.getString("full_name"),
-                        rs.getString("session_info"),
-                        rs.getDate("registration_date").toLocalDate(),
-                        rs.getString("price")
+                        rs.getInt("inscription_ID"), // Inscription ID
+                        studentId, // Student ID
+                        sessionId, // Session ID
+                        rs.getDate("registration_date").toLocalDate(), // Registration date
+                        rs.getString("price"), // Price
+                        rs.getString("full_name"), // Full name
+                        rs.getString("session_info") // Session details
                 );
                 inscriptions.add(inscription);
             }
@@ -796,6 +841,7 @@ public class DatabaseHelper {
         }
         return inscriptions;
     }
+
 
 
     public ObservableList<StudentInscription> getInscriptionsBySession(int sessionId) {

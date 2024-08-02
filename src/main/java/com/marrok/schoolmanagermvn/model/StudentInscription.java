@@ -1,5 +1,8 @@
 package com.marrok.schoolmanagermvn.model;
 
+import com.marrok.schoolmanagermvn.util.DatabaseHelper;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class StudentInscription {
@@ -20,13 +23,26 @@ public class StudentInscription {
         this.price = price;
     }
 
+    public StudentInscription(Integer id, Integer studentId, Integer sessionId, LocalDate registrationDate, String price, String studentFullName, String sessionDetails) {
+        this.id = id;
+        this.studentId = studentId;
+        this.sessionId = sessionId;
+        this.registrationDate = registrationDate;
+        this.price = price;
+        this.studentFullName = studentFullName;
+        this.sessionDetails = sessionDetails;
+    }
+
     public StudentInscription(int inscriptionId, String fullName, String sessionInfo, LocalDate registrationDate, String price) {
         this.id = inscriptionId;
         this.studentFullName=fullName;
         this.sessionDetails=sessionInfo;
         this.registrationDate = registrationDate;
         this.price = price;
+
     }
+
+
 
     public Integer getId() {
         return id;
