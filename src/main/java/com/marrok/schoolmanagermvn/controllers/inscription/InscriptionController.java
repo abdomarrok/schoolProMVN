@@ -7,7 +7,6 @@ import com.marrok.schoolmanagermvn.model.StudentInscription;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import com.marrok.schoolmanagermvn.util.GeneralUtil;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -27,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,10 +42,11 @@ public class InscriptionController implements Initializable {
 
     @FXML private TableView<StudentInscription> tbData;
     @FXML private TableColumn<StudentInscription, Integer> inscriptionId;
-    @FXML private TableColumn<StudentInscription, Integer> studentId;
-    @FXML private TableColumn<StudentInscription, Integer> sessionId;
+    @FXML private TableColumn<StudentInscription, String> studentFullName;
+    @FXML private TableColumn<StudentInscription, String> sessionDetails;
     @FXML private TableColumn<StudentInscription, String> registrationDate;
     @FXML private TableColumn<StudentInscription, String> price;
+
     @FXML private JFXDrawer drawer;
     @FXML private JFXHamburger hamburger;
     @FXML private FilterView<StudentInscription> filterView;
@@ -61,8 +62,8 @@ public class InscriptionController implements Initializable {
             e.printStackTrace();
             // Handle exception
         }
-        loadFilter(); // Setup filters and data before initializing the table
-        initTable();  // Initialize the table after filters are set up
+        loadFilter();
+        initTable();
         loadDrawer();
         CSSFX.start();
     }
@@ -92,7 +93,9 @@ public class InscriptionController implements Initializable {
 
     @FXML
     private void updateInscription(ActionEvent event) {
+        System.out.println("InscriptionController.updateInscription");
         StudentInscription selectedInscription = tbData.getSelectionModel().getSelectedItem();
+        System.out.println("selectedInscription getid"+selectedInscription.getId());
         if (selectedInscription != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/marrok/schoolmanagermvn/views/inscription/update.fxml"));
@@ -102,10 +105,11 @@ public class InscriptionController implements Initializable {
 
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("Update Inscription");
-                stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png")));
+                stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png"))));
                 UpdateInscriptionController controller = loader.getController();
-                controller.setInscription(selectedInscription);
-                controller.setController(this);
+                int inscriptionId = selectedInscription.getId();
+                System.out.println("Inscriptionid before set controller: " + inscriptionId);
+                controller.setController(this ,inscriptionId);
 
                 stage.showAndWait();
                 // Refresh the table data after updating the inscription
@@ -170,10 +174,21 @@ public class InscriptionController implements Initializable {
 
     private void initTable() {
         inscriptionId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        studentId.setCellValueFactory(new PropertyValueFactory<>("studentId"));
-        sessionId.setCellValueFactory(new PropertyValueFactory<>("sessionId"));
+        studentFullName.setCellValueFactory(new PropertyValueFactory<>("studentFullName"));
+        sessionDetails.setCellValueFactory(new PropertyValueFactory<>("sessionDetails"));
         registrationDate.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    public void loadInscriptionsFromDatabase() {
+        try {
+            // Fetch the inscriptions along with the full name and session details
+            List<StudentInscription> inscriptions = dbHelper.getAllInscriptionsWithDetails();
+            inscriptionsModels.setAll(inscriptions);
+            filterView.getItems().setAll(inscriptionsModels);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadDrawer() {
@@ -203,14 +218,7 @@ public class InscriptionController implements Initializable {
         });
     }
 
-    public void loadInscriptionsFromDatabase() {
-        try {
-            inscriptionsModels = dbHelper.getAllInscriptions(); // Load inscriptions from the database
-            filterView.getItems().setAll(inscriptionsModels);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public void exit(MouseEvent mouseEvent) {
         Platform.exit();

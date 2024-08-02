@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseHelper {
 
@@ -106,6 +108,39 @@ public class DatabaseHelper {
 
         return students;
 
+    }
+    public int getStudentIdByName(String name) {
+        String query = "SELECT stud_ID FROM student WHERE CONCAT(fname, ' ', lname) = ?";
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("stud_ID");
+                } else {
+                    throw new SQLException("No student found with the name: " + name);
+                }
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public ObservableList<String> getStudentNames() {
+        ObservableList<String> studentNames = FXCollections.observableArrayList();
+        String query = "SELECT CONCAT(fname, ' ', lname) AS full_name FROM student"; // Adjust based on your schema
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String fullName = rs.getString("full_name");
+                studentNames.add(fullName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception
+        }
+
+        return studentNames;
     }
     public boolean addStudent(Student student) {
         String query = "INSERT INTO student (fname, lname, year, contact, gender, class_rooms) VALUES (?, ?, ?, ?, ?, ?)";
@@ -425,6 +460,57 @@ public class DatabaseHelper {
 
         return sessions;
     }
+    public Map<String, Integer> getSessionNames() {
+        Map<String, Integer> sessionMap = new HashMap<>();
+        String query =
+                "SELECT cs.id, m.name AS module_name, t.fname, t.lname " +
+                        "FROM course_session cs " +
+                        "JOIN module m ON cs.module_ID = m.module_id " +
+                        "JOIN teacher t ON cs.teacher_ID = t.teacher_id"; // Adjust table names and fields as necessary
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int sessionId = rs.getInt("id");
+                String moduleName = rs.getString("module_name");
+                String teacherName = rs.getString("fname") + " " + rs.getString("lname");
+                String displayName = "Session " + sessionId + ": " + moduleName + " with " + teacherName;
+                sessionMap.put(displayName, sessionId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+
+        return sessionMap;
+    }
+
+
+    public int getSessionIdByName(String name) {
+        String query =
+                "SELECT cs.id " +
+                        "FROM course_session cs " +
+                        "JOIN module m ON cs.module_ID = m.module_id " +
+                        "WHERE m.name = ?"; // Adjust table names and fields as necessary
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                } else {
+                    GeneralUtil.showAlert(Alert.AlertType.ERROR,"Session not Found","No session found with the name: " + name);
+                   // throw new SQLException("No session found with the name: " + name);
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
+        }
+        return -1;
+    }
+
 
 
 
@@ -603,6 +689,39 @@ public class DatabaseHelper {
             return false;
         }
     }
+    public Map<String, Object> getInscriptionById(int inscriptionId) throws SQLException {
+        String query = "SELECT i.*, s.fname AS student_name, " +
+                "CONCAT('Session ', cs.id, ': ', m.name, ' with ', t.fname, ' ', t.lname) AS session_display_name " +
+                "FROM student_inscription i " +
+                "JOIN student s ON i.student_ID = s.stud_ID " +
+                "JOIN course_session cs ON i.session_id = cs.id " +
+                "JOIN module m ON cs.module_ID = m.module_id " +
+                "JOIN teacher t ON cs.teacher_ID = t.teacher_ID " +
+                "WHERE i.inscription_ID = ?";
+
+        try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
+            stmt.setInt(1, inscriptionId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("student_name", rs.getString("student_name"));
+                    result.put("session_display_name", rs.getString("session_display_name"));
+                    result.put("registration_date", rs.getDate("registration_date") != null ? rs.getDate("registration_date").toLocalDate() : null);
+                    result.put("price", rs.getString("price"));
+
+                    return result;
+                } else {
+                    // Handle the case where no record is found
+                    System.out.println("No inscription found with ID: " + inscriptionId);
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error occurred while fetching inscription: " + e.getMessage());
+            throw e; // Re-throw the exception to be handled by the caller
+        }
+    }
 
     public ObservableList<StudentInscription> getAllInscriptions() {
         String query = "SELECT * FROM student_inscription";
@@ -624,6 +743,7 @@ public class DatabaseHelper {
         }
         return inscriptions;
     }
+
 
     public ObservableList<StudentInscription> getInscriptionsByStudent(int studentId) {
         String query = "SELECT * FROM student_inscription WHERE student_ID = ?";
@@ -647,6 +767,36 @@ public class DatabaseHelper {
         }
         return inscriptions;
     }
+    public ObservableList<StudentInscription> getAllInscriptionsWithDetails() {
+        String query = "SELECT si.inscription_ID, " +
+                "s.stud_ID, CONCAT(s.fname, ' ', s.lname) AS full_name, " +
+                "cs.id, CONCAT(m.name, ' (', t.teacher_ID, ')') AS session_info, " +
+                "si.registration_date, si.price " +
+                "FROM student_inscription si " +
+                "JOIN student s ON si.student_ID = s.stud_ID " +
+                "JOIN course_session cs ON si.session_ID = cs.id " +
+                "JOIN module m ON cs.module_ID = m.module_id " +
+                "JOIN teacher t ON cs.teacher_ID = t.teacher_ID";
+
+        ObservableList<StudentInscription> inscriptions = FXCollections.observableArrayList();
+        try (PreparedStatement stmt = cnn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                StudentInscription inscription = new StudentInscription(
+                        rs.getInt("inscription_ID"),
+                        rs.getString("full_name"),
+                        rs.getString("session_info"),
+                        rs.getDate("registration_date").toLocalDate(),
+                        rs.getString("price")
+                );
+                inscriptions.add(inscription);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return inscriptions;
+    }
+
 
     public ObservableList<StudentInscription> getInscriptionsBySession(int sessionId) {
         String query = "SELECT * FROM student_inscription WHERE session_id = ?";

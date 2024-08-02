@@ -1,9 +1,9 @@
 package com.marrok.schoolmanagermvn.controllers.inscription;
 
-import com.marrok.schoolmanagermvn.model.StudentInscription;
-import com.marrok.schoolmanagermvn.model.StudentInscription;
 import com.marrok.schoolmanagermvn.util.DatabaseHelper;
 import com.marrok.schoolmanagermvn.util.GeneralUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,68 +13,96 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class UpdateInscriptionController implements Initializable {
 
-    @FXML private TextField studentIdField;
-    @FXML private TextField sessionIdField;
+    private int inscriptionId; // ID of the inscription to be updated
+
+    @FXML private ChoiceBox<String> studentChoiceBox;
+    @FXML private ChoiceBox<String> sessionChoiceBox;
     @FXML private DatePicker registrationDateField;
     @FXML private TextField priceField;
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    private StudentInscription inscription;
     private InscriptionController parentController;
     private DatabaseHelper dbHelper;
+    private ObservableList<String> students = FXCollections.observableArrayList();
+    private Map<String, Integer> sessionsMap = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             dbHelper = new DatabaseHelper();
+            students.setAll(dbHelper.getStudentNames());
+            studentChoiceBox.setItems(students);
+
+            sessionsMap = dbHelper.getSessionNames();
+            sessionChoiceBox.setItems(FXCollections.observableArrayList(sessionsMap.keySet()));
+
+
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle exception
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Failed to initialize data: " + e.getMessage());
         }
     }
 
-    public void setInscription(StudentInscription inscription) {
-        this.inscription = inscription;
-        if (inscription != null) {
-            studentIdField.setText(String.valueOf(inscription.getStudentId()));
-            sessionIdField.setText(String.valueOf(inscription.getSessionId()));
-            registrationDateField.setValue(inscription.getRegistrationDate()); // Directly use LocalDate
-            priceField.setText(inscription.getPrice());
-        }
-    }
-
-
-    public void setController(InscriptionController parentController) {
+    public void setController(InscriptionController parentController, int inscriptionId){
         this.parentController = parentController;
+        this.inscriptionId = inscriptionId;
+        try {
+            loadInscriptionData();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Inscription ID set in controller: " + inscriptionId); // Debug statement
+    }
+
+    private void loadInscriptionData() throws SQLException {
+        System.out.println("UpdateInscriptionController.loadInscriptionData");
+        System.out.println("inscriptionId: " + inscriptionId);
+        Map<String, Object> inscriptionData = dbHelper.getInscriptionById(inscriptionId);
+        if (inscriptionData != null) {
+            String studentName = (String) inscriptionData.get("student_name");
+            String sessionDisplayName = (String) inscriptionData.get("session_display_name");
+            LocalDate registrationDate = (LocalDate) inscriptionData.get("registration_date");
+            String price = (String) inscriptionData.get("price");
+
+            studentChoiceBox.setValue(studentName);
+            sessionChoiceBox.setValue(sessionDisplayName);
+            registrationDateField.setValue(registrationDate);
+            priceField.setText(price);
+        } else {
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Inscription not found.");
+            ((Stage) saveButton.getScene().getWindow()).close();
+        }
     }
 
     @FXML
-    private void saveInscription(MouseEvent event) {
+    private void saveUpdatedInscription(MouseEvent event) {
         try {
-            // Get input values
-            int studentId = Integer.parseInt(studentIdField.getText());
-            int sessionId = Integer.parseInt(sessionIdField.getText());
+            String selectedStudent = studentChoiceBox.getValue();
+            String selectedSessionDisplay = sessionChoiceBox.getValue();
             LocalDate registrationDate = registrationDateField.getValue();
             String price = priceField.getText();
 
-            // Ensure registrationDate is not null
-            if (registrationDate == null) {
-                GeneralUtil.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please select a valid registration date.");
+            if (selectedStudent == null || selectedSessionDisplay == null || registrationDate == null || price == null || price.trim().isEmpty()) {
+                GeneralUtil.showAlert(Alert.AlertType.WARNING, "Validation Error", "Please complete all fields.");
                 return;
             }
 
+            int studentId = dbHelper.getStudentIdByName(selectedStudent);
+            int sessionId = sessionsMap.getOrDefault(selectedSessionDisplay, -1);
 
-            // Update inscription in the database
-            boolean success = dbHelper.updateInscription( inscription.getId(), // Ensure 'inscription' is defined and available
-                    studentId,
-                    sessionId,
-                    registrationDate,
-                    price);
+            if (sessionId == -1) {
+                GeneralUtil.showAlert(Alert.AlertType.ERROR, "Session not Found", "The selected session could not be found.");
+                return;
+            }
+
+            boolean success = dbHelper.updateInscription(inscriptionId, studentId, sessionId, registrationDate, price);
 
             if (success) {
                 GeneralUtil.showAlert(Alert.AlertType.INFORMATION, "Success", "Inscription updated successfully.");
@@ -85,11 +113,11 @@ public class UpdateInscriptionController implements Initializable {
             } else {
                 GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Failed to update inscription.");
             }
-        } catch (NumberFormatException e) {
-            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please enter valid numeric values.");
+        } catch (Exception e) {
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 
     @FXML
     private void cancel(MouseEvent event) {

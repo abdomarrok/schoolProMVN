@@ -1,27 +1,29 @@
 package com.marrok.schoolmanagermvn.model;
 
-
 import java.time.LocalDate;
 
 public class StudentInscription {
 
     private Integer id;
-
-
     private Integer studentId;
-
-
     private Integer sessionId;
-
-
     private LocalDate registrationDate;
-
     private String price;
+    private String studentFullName; // New field
+    private String sessionDetails;  // New field
 
     public StudentInscription(Integer id, Integer studentId, Integer sessionId, LocalDate registrationDate, String price) {
         this.id = id;
         this.studentId = studentId;
         this.sessionId = sessionId;
+        this.registrationDate = registrationDate;
+        this.price = price;
+    }
+
+    public StudentInscription(int inscriptionId, String fullName, String sessionInfo, LocalDate registrationDate, String price) {
+        this.id = inscriptionId;
+        this.studentFullName=fullName;
+        this.sessionDetails=sessionInfo;
         this.registrationDate = registrationDate;
         this.price = price;
     }
@@ -66,4 +68,19 @@ public class StudentInscription {
         this.price = price;
     }
 
+    public String getStudentFullName() {
+        return studentFullName;
+    }
+
+    public void setStudentFullName(String studentFullName) {
+        this.studentFullName = studentFullName;
+    }
+
+    public String getSessionDetails() {
+        return sessionDetails;
+    }
+
+    public void setSessionDetails(String sessionDetails) {
+        this.sessionDetails = sessionDetails;
+    }
 }
