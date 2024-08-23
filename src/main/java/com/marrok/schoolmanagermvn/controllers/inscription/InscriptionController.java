@@ -241,12 +241,7 @@ public void loadInscriptionsFromDatabase() {
     try {
         // Fetch the inscriptions along with the full name and session details
         List<StudentInscription> inscriptions = dbHelper.getAllInscriptionsWithDetails();
-        for (StudentInscription inscription : inscriptions) {
-            System.out.println("Loaded inscription: " + inscription.getId() + ", Student ID: " + inscription.getStudentId());
-            if (inscription.getStudentId() == null) {
-                System.out.println("Warning: Null studentId for inscription ID: " + inscription.getId());
-            }
-        }
+
         inscriptionsModels.setAll(inscriptions);
         filterView.getItems().setAll(inscriptionsModels);
     } catch (Exception e) {

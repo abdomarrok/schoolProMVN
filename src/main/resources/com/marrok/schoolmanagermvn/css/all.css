@@ -119,3 +119,27 @@ red FA0C0C
 .search-bar .prompt-text {
     -fx-text-fill: #8B8383;
 }
+
+
+.choice-box {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 14px;
+    -fx-pref-height: 26px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #C4C4C4;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+}
+
+.choice-box .arrow {
+    -fx-background-color: #434343; /* Blue arrow color */
+}
+
+.choice-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.choice-box .arrow-button:hover {
+    -fx-background-color: #E7267A; /* Darker blue on hover */
+}

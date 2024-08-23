@@ -6,10 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +74,7 @@ public class DatabaseHelper {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle exception
+        GeneralUtil.showAlert(Alert.AlertType.ERROR,"Login Error",e.getMessage());
         }
         return false;
     }
@@ -821,15 +818,20 @@ public class DatabaseHelper {
         try (PreparedStatement stmt = cnn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                // Extract the student ID and session ID from the result set
                 int studentId = rs.getInt("student_ID");
                 int sessionId = rs.getInt("session_ID");
+
+                // Handle the date properly, checking for NULL
+                Date registrationDate = rs.getDate("registration_date");
+                System.out.println("DatabaseHelper.getAllInscriptionsWithDetails");
+                System.out.println("registrationDate: " + registrationDate);
+                LocalDate localDate = registrationDate != null ? registrationDate.toLocalDate() : null;
 
                 StudentInscription inscription = new StudentInscription(
                         rs.getInt("inscription_ID"), // Inscription ID
                         studentId, // Student ID
                         sessionId, // Session ID
-                        rs.getDate("registration_date").toLocalDate(), // Registration date
+                        localDate, // Registration date
                         rs.getString("price"), // Price
                         rs.getString("full_name"), // Full name
                         rs.getString("session_info") // Session details

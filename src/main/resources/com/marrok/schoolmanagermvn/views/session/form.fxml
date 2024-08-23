@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.session.FormController">
+<GridPane hgap="10" styleClass="background" vgap="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.session.FormController">
+    <stylesheets>
+        <URL value="@../../css/crud.css" />
+        <URL value="@../../css/all.css" />
+    </stylesheets>
+    <Label styleClass="lbl" text="Module:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <ChoiceBox fx:id="moduleChoiceBox" minWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
 
-    <Label text="Module:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <ChoiceBox fx:id="moduleChoiceBox" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <Label styleClass="lbl" text="Teacher:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <ChoiceBox fx:id="teacherChoiceBox" minWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
 
-    <Label text="Teacher:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-    <ChoiceBox fx:id="teacherChoiceBox" GridPane.columnSpan="1" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-    <HBox spacing="10" GridPane.rowIndex="2" GridPane.columnSpan="2">
-        <Button fx:id="saveButton" onAction="#handleSave" text="Save"/>
-        <Button fx:id="cancelButton" onAction="#handleCancel" text="Cancel"/>
+    <HBox spacing="10" GridPane.columnSpan="2" GridPane.rowIndex="2">
+        <Button fx:id="saveButton" onAction="#handleSave" styleClass="crud-add" text="Save" />
+        <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="crud-update" text="Cancel" />
     </HBox>
 
     <columnConstraints>
@@ -25,4 +30,7 @@
         <RowConstraints />
         <RowConstraints />
     </rowConstraints>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
 </GridPane>

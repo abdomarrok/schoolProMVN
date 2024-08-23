@@ -5,7 +5,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane hgap="10" styleClass="background" vgap="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.inscription.AddInscriptionController">
+<GridPane hgap="10" styleClass="background" vgap="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.marrok.schoolmanagermvn.controllers.inscription.AddInscriptionController">
 
     <stylesheets>
         <URL value="@../../css/crud.css" />

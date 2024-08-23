@@ -1,14 +1,25 @@
 package com.marrok.schoolmanagermvn.util;
 
+import com.marrok.schoolmanagermvn.controllers.dashboard.DashboardController;
+import com.marrok.schoolmanagermvn.controllers.signin.SignInController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class GeneralUtil {
@@ -139,6 +150,38 @@ public class GeneralUtil {
     public static boolean containsIgnoreCase(String str, String subString) {
         return str.toLowerCase().contains(subString.toLowerCase());
     }
+
+
+    public static void goBackLogin(ActionEvent event) {
+        Scene scene;
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(GeneralUtil.class.getResource("/com/marrok/schoolmanagermvn/views/signin/signin.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException ex) {
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void goBackDashboard(ActionEvent event) {
+        Scene scene;
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(GeneralUtil.class.getResource("/com/marrok/schoolmanagermvn/views/dashboard/dashboard.fxml"));
+            root = loader.load();
+            scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 
     public static void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);

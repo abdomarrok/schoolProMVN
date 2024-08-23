@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<?import java.lang.String?>
 <VBox alignment="CENTER" spacing="10.0" styleClass="drawer_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.NavDrawerController">
     <stylesheets>
         <String fx:value="/com/marrok/schoolmanagermvn/css/all.css" />
     </stylesheets>
     <children>
-        <Button fx:id="dashboard_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goDashboard" styleClass="jfxbtn" text="Dashboard">
+        <Button fx:id="dashboard_btn" alignment="CENTER" minWidth="60.0" maxWidth="60.0" focusTraversable="false" graphicTextGap="15.0" onAction="#goDashboard" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-dashboard" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="inscription_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goInscriptions" styleClass="jfxbtn" text="Inscription">
+        <Button fx:id="inscription_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="60.0" maxWidth="60.0" onAction="#goInscriptions" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-user-plus" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="students_btn" alignment="CENTER" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goStudents" styleClass="jfxbtn" text="Students">
+        <Button fx:id="students_btn" alignment="CENTER" focusTraversable="false"  minWidth="60.0" maxWidth="60.0" graphicTextGap="15.0" onAction="#goStudents" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="modules_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goModules" styleClass="jfxbtn" text="Modules">
+        <Button fx:id="modules_btn" focusTraversable="false" graphicTextGap="15.0"  minWidth="60.0" maxWidth="60.0" onAction="#goModules" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-book" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="session_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goSession" styleClass="jfxbtn" text="Session">
+        <Button fx:id="session_btn" focusTraversable="false" graphicTextGap="15.0"  minWidth="60.0" maxWidth="60.0" onAction="#goSession" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-circle-o-notch" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goTeachers" styleClass="jfxbtn" text="Teachers">
+        <Button fx:id="teachers_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="60.0" maxWidth="60.0" onAction="#goTeachers" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-users" iconSize="24" />
             </graphic>
         </Button>
-        <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="200.0" onAction="#goSettings" styleClass="jfxbtn" text="Settings">
+        <Button fx:id="setting_btn" focusTraversable="false" graphicTextGap="15.0" minWidth="60.0" maxWidth="60.0" onAction="#goSettings" styleClass="jfxbtn">
             <graphic>
                 <FontIcon iconColor="white" iconLiteral="fa-cog" iconSize="24" />
             </graphic>

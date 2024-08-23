@@ -15,8 +15,8 @@
 <AnchorPane fx:id="background" prefHeight="517.0" prefWidth="505.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.signin.SignInController">
     <stylesheets>
-<!--        <URL value="@../../css/all.css"/>-->
-        <URL value="@../../css/spec/darcula.css"/>
+        <URL value="@../../css/all.css"/>
+<!--        <URL value="@../../css/spec/darcula.css"/>-->
 
     </stylesheets>
     <ImageView fitHeight="215.0" fitWidth="208.0" layoutX="156.0" layoutY="45.0" AnchorPane.bottomAnchor="293.0" AnchorPane.leftAnchor="156.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="45.0">

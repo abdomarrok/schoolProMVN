@@ -157,6 +157,7 @@ public class StudentsController implements Initializable {
 
 
     private void loadFilter() {
+        filterView.getFilterGroups().clear();
         // Enhanced text filter based on multiple fields
         filterView.setTextFilterProvider(text -> student -> {
             if (text == null || text.isEmpty()) {

@@ -1,6 +1,8 @@
 package com.marrok.schoolmanagermvn.util;
 
 
+import javafx.scene.control.Alert;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
@@ -16,6 +18,7 @@ public class DatabaseConnection {
         try {
             this.connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
         } catch (SQLException e) {
+            GeneralUtil.showAlert(Alert.AlertType.ERROR,"Connection Error","Make sure the server is ON !!!\n"+e.getMessage());
             throw new SQLException("Failed to create the database connection.", e);
         }
     }

@@ -56,17 +56,7 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println(Main.class.getResource("/com/marrok/schoolmanagermvn/views/signin/signin.fxml"));
-//        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/marrok/schoolmanagermvn/views/signin/signin.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-//        scene.setCursor(Cursor.HAND);
-//        System.out.println(Main.class.getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png"));
-//        stage.getIcons().add(new Image(Objects.requireNonNull(Main.class.getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png"))));
-//        stage.initStyle(StageStyle.UNDECORATED);
-//        stage.setTitle("SchoolPro");
-//        stage.setScene(scene);
-//        stage.centerOnScreen();
-//        stage.show();
+
     }
 
     public static void main(String[] args) {

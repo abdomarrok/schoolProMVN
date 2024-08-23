@@ -71,38 +71,46 @@ public class DashboardController implements Initializable {
 
     private void loadDrawer() {
         try {
-            VBox box = FXMLLoader.load(getClass().getResource("/com/marrok/schoolmanagermvn/views/NavDrawer.fxml"));
-            drawer.setSidePane(box);
-            drawer.setMinWidth(0); // Set initial min width to 0
+            // Load the expanded and collapsed views
+            VBox expandedBox = FXMLLoader.load(getClass().getResource("/com/marrok/schoolmanagermvn/views/NavDrawer.fxml"));
+            VBox collapsedBox = FXMLLoader.load(getClass().getResource("/com/marrok/schoolmanagermvn/views/NavDrawersmall.fxml"));
+
+            // Set the initial content and size
+            drawer.setSidePane(collapsedBox); // Initially set to collapsed view
+            drawer.setPrefWidth(60); // Small width for collapsed state
+            drawer.setMinWidth(60); // Ensure minimum width to accommodate the collapsed view
+
+            // Hamburger transition
+            HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
+            task.setRate(-1);
+            hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> drawer.toggle());
+
+            // Handle drawer opening and closing
+            drawer.setOnDrawerOpening(event -> {
+                task.setRate(task.getRate() * -1);
+                task.play();
+                drawer.setSidePane(expandedBox); // Set the expanded view
+                drawer.setPrefWidth(220); // Full width when opening
+            });
+
+            drawer.setOnDrawerClosed(event -> {
+                task.setRate(task.getRate() * -1);
+                task.play();
+                drawer.setSidePane(collapsedBox); // Set the collapsed view
+                drawer.setPrefWidth(60); // Small width for collapsed state
+            });
 
         } catch (IOException ex) {
             Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(hamburger);
-        task.setRate(-1);
-        hamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> drawer.toggle());
-
-        drawer.setOnDrawerOpening(event -> {
-            task.setRate(task.getRate() * -1);
-            task.play();
-            drawer.setMinWidth(220); // Set min width to 220 when opening
-        });
-
-        drawer.setOnDrawerClosed(event -> {
-            task.setRate(task.getRate() * -1);
-            task.play();
-            drawer.setMinWidth(0); // Reset min width to 0 when closed
-        });
     }
+
+
 
     private void loadChart() {
         try {
             int totalClasses = dbHelper.getTotalClasses();
             int totalTeachers = dbHelper.getTotalTeachers();
-            System.out.println("DashboardController.loadChart");
-            System.out.println("totalClasses: " + totalClasses);
-            System.out.println("totalTeachers: " + totalTeachers);
 
             // Clear existing data
             pieChart.getData().clear();

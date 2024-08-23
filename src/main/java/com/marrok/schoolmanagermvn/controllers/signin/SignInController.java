@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -87,6 +88,7 @@ public class SignInController implements Initializable {
 
             // Create a new stage if a new style is needed
             Stage newStage = new Stage();
+            newStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/com/marrok/schoolmanagermvn/img/lg.png")));
             newStage.initStyle(StageStyle.DECORATED); // Set style before showing
             newStage.setScene(scene);
             newStage.setResizable(true);

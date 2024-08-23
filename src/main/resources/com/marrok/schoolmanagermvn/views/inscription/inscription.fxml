@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import com.dlsc.gemsfx.FilterView?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import com.dlsc.gemsfx.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="com.marrok.schoolmanagermvn.controllers.inscription.InscriptionController">
+<BorderPane prefHeight="609.0" prefWidth="944.0" styleClass="dashboard_background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marrok.schoolmanagermvn.controllers.inscription.InscriptionController">
     <stylesheets>
         <URL value="@../../css/all.css" />
         <URL value="@../../css/tableview.css" />
@@ -26,7 +17,7 @@
     <top>
         <Pane prefHeight="139.0" prefWidth="1102.0" styleClass="dashboard_panel">
             <children>
-                <Label layoutX="73.0" layoutY="30.0" text="Inscriptions" textFill="WHITE">
+                <Label layoutX="73.0" layoutY="30.0" text="Student Inscriptions" textFill="WHITE">
                     <font>
                         <Font size="48.0" />
                     </font>
@@ -54,7 +45,7 @@
                 <VBox prefHeight="150.0" prefWidth="878.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
                         <FilterView fx:id="filterView" title="Filter Inscriptions" />
-                        <HBox alignment="CENTER" spacing="10.0">
+                        <HBox alignment="CENTER" prefHeight="19.0" prefWidth="894.0" spacing="10.0">
                             <Button fx:id="addButton" onAction="#addInscription" styleClass="crud-add" text="Add" />
                             <Button fx:id="updateButton" onAction="#updateInscription" styleClass="crud-update" text="Update" />
                             <Button fx:id="deleteButton" onAction="#deleteInscription" styleClass="crud-delete" text="Delete" />

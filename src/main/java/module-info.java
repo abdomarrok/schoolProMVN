@@ -30,5 +30,7 @@ module com.marrok.schoolmanagermvn {
     opens com.marrok.schoolmanagermvn.controllers.session to javafx.fxml;
     exports com.marrok.schoolmanagermvn.controllers.inscription to javafx.fxml;
     opens com.marrok.schoolmanagermvn.controllers.inscription;
+    exports com.marrok.schoolmanagermvn.controllers.settings to javafx.fxml;
+    opens com.marrok.schoolmanagermvn.controllers.settings;
 
 }
