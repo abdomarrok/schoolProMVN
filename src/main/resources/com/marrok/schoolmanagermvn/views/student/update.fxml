@@ -37,11 +37,14 @@
         <Label alignment="CENTER" styleClass="lbl" text="Contact:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
         <TextField fx:id="contactField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Year:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-        <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label alignment="CENTER" styleClass="lbl" text="Birth Date:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+        <TextField fx:id="birthDateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-        <ComboBox fx:id="genderComboBox" prefWidth="261.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+        <Label alignment="CENTER" styleClass="lbl" text="Level:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+        <TextField fx:id="levelField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+        <ComboBox fx:id="genderComboBox" prefWidth="261.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Male" />
@@ -50,32 +53,36 @@
             </items>
         </ComboBox>
 
-        <Button onAction="#updateStudent" prefHeight="26.0" prefWidth="97.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+        <Button onAction="#updateStudent" prefHeight="26.0" prefWidth="97.0" text="Update" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
             <styleClass>
                 <String fx:value="crud-update" />
             </styleClass>
         </Button>
 
-        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="7">
             <styleClass>
                 <String fx:value="crud-delete" />
             </styleClass>
         </Button>
     </children>
+
     <stylesheets>
         <URL value="@../../css/all.css" />
         <URL value="@../../css/crud.css" />
     </stylesheets>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
 </GridPane>

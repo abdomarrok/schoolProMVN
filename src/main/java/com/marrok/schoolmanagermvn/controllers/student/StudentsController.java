@@ -167,7 +167,6 @@ public class StudentsController implements Initializable {
             return student.getFname().toLowerCase().contains(lowerCaseText) ||
                     student.getLname().toLowerCase().contains(lowerCaseText) ||
                     String.valueOf(student.getContact()).contains(lowerCaseText) ||
-                    String.valueOf(student.getYear()).contains(lowerCaseText) ||
                     (student.getGender() ? "male".contains(lowerCaseText) : "female".contains(lowerCaseText));
         });
 
@@ -198,15 +197,7 @@ public class StudentsController implements Initializable {
             });
         }
 
-        List<Integer> classrooms = dbHelper.getClassrooms();
-        for (Integer classroom : classrooms) {
-            classroomGroup.getFilters().add(new Filter<>("Classroom " + classroom) {
-                @Override
-                public boolean test(Student student) {
-                    return student.getClassRooms() == classroom;
-                }
-            });
-        }
+
 
 
         genderGroup.getFilters().add(new Filter<>("Male") {

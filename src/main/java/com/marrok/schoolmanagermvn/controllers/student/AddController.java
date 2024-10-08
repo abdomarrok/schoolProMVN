@@ -6,11 +6,13 @@ import com.marrok.schoolmanagermvn.util.GeneralUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class AddController {
 
@@ -24,10 +26,14 @@ public class AddController {
     private TextField contactField;
 
     @FXML
-    private TextField yearField;
+    private DatePicker birthDateField; // Updated to DatePicker for birth date
+
+    @FXML
+    private TextField levelField; // New field for level
 
     @FXML
     private ComboBox<String> genderComboBox;
+
     private StudentsController studentsController;
     private DatabaseHelper dbHelper;
 
@@ -48,31 +54,29 @@ public class AddController {
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
         String contactStr = contactField.getText().trim();
-        String yearStr = yearField.getText().trim();
+        LocalDate birthDate = birthDateField.getValue(); // Get birth date
+        String level = levelField.getText().trim(); // Get level
         String gender = genderComboBox.getValue();
 
         // Perform validation
-        if (firstName.isEmpty() || lastName.isEmpty() || contactStr.isEmpty() || yearStr.isEmpty() || gender == null) {
+        if (firstName.isEmpty() || lastName.isEmpty() || contactStr.isEmpty() || birthDate == null || level.isEmpty() || gender == null) {
             // Display an error message or handle invalid input
             GeneralUtil.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please fill in all fields.");
             return;
         }
 
         try {
-            // Parse integers
-            int contact = Integer.parseInt(contactStr);
-            int year = Integer.parseInt(yearStr);
+
 
             // Create a new Student object
             Student student = new Student(
-                    // Assuming you have a constructor that includes ID generation or you handle it in DB
-                    -1, // Or use appropriate logic to handle ID generation
+                    -1, // Assuming the ID is auto-generated
                     firstName,
                     lastName,
-                    year,
-                    contact,
-                    "Male".equalsIgnoreCase(gender),
-                    0 // Or set to appropriate classroom value or remove if not used
+                    birthDate.toString(),
+                    level, // Use the level
+                    contactStr,
+                    "Male".equalsIgnoreCase(gender)
             );
 
             // Save the student data to the database
@@ -86,14 +90,13 @@ public class AddController {
             }
         } catch (NumberFormatException e) {
             // Handle invalid number format
-            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please ensure contact and year are valid numbers.");
+            GeneralUtil.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please ensure contact is a valid number.");
         } catch (Exception e) {
             // Handle other unexpected exceptions
             GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "An unexpected error occurred while adding the student.");
             e.printStackTrace(); // Log the exception
         }
     }
-
 
     @FXML
     public void cancel(ActionEvent event) {
@@ -103,6 +106,6 @@ public class AddController {
     }
 
     public void setController(StudentsController studentsController) {
-        this.studentsController=studentsController;
+        this.studentsController = studentsController;
     }
 }

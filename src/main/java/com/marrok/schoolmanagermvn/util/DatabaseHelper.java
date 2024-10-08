@@ -90,12 +90,15 @@ public class DatabaseHelper {
                 int id = rs.getInt("stud_ID");
                 String fname = rs.getString("fname");
                 String lname = rs.getString("lname");
-                int year = rs.getInt("year");
-                int contact = rs.getInt("contact");
+                String birthDate = rs.getString("birth_date"); // Assuming birth_date is stored as a string
+                String contact = rs.getString("contact");
                 boolean gender = rs.getBoolean("gender");
-                int classRooms = rs.getInt("class_rooms");
+                String level = rs.getString("level"); // Assuming level is stored as a string
 
-                Student student = new Student(id, fname, lname, year, contact, gender, classRooms);
+                // Create a new Student object
+                Student student = new Student(id, fname, lname, birthDate, level,contact, gender);
+
+                // Add the student to the list
                 students.add(student);
             }
         } catch (SQLException e) {
@@ -104,8 +107,8 @@ public class DatabaseHelper {
         }
 
         return students;
-
     }
+
     public Student getStudentById(int studentId) {
         Student student = null;
         String query = "SELECT * FROM student WHERE stud_ID = ?"; // Adjust query to match your table schema
@@ -117,12 +120,13 @@ public class DatabaseHelper {
                     int id = rs.getInt("stud_ID");
                     String fname = rs.getString("fname");
                     String lname = rs.getString("lname");
-                    int year = rs.getInt("year");
-                    int contact = rs.getInt("contact");
+                    String birthDate = rs.getString("birth_date"); // Get birth date
+                    String contact = rs.getString("contact");
                     boolean gender = rs.getBoolean("gender");
-                    int classRooms = rs.getInt("class_rooms");
+                    String level = rs.getString("level"); // Get level
 
-                    student = new Student(id, fname, lname, year, contact, gender, classRooms);
+                    // Create a new Student object with updated fields
+                    student = new Student(id, fname, lname, birthDate, level, contact, gender);
                 }
             }
         } catch (SQLException e) {
@@ -132,6 +136,7 @@ public class DatabaseHelper {
 
         return student;
     }
+
 
     public int getStudentIdByName(String name) {
         String query = "SELECT stud_ID FROM student WHERE CONCAT(fname, ' ', lname) = ?";
@@ -167,15 +172,15 @@ public class DatabaseHelper {
         return studentNames;
     }
     public boolean addStudent(Student student) {
-        String query = "INSERT INTO student (fname, lname, year, contact, gender, class_rooms) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO student (fname, lname, birth_date, contact, gender, level) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = this.cnn.prepareStatement(query)) {
             stmt.setString(1, student.getFname());
             stmt.setString(2, student.getLname());
-            stmt.setInt(3, student.getYear());
-            stmt.setInt(4, student.getContact());
-            stmt.setBoolean(5, student.getGender()); // Assuming gender is stored as a boolean
-            stmt.setInt(6, student.getClassRooms()); // Adjust if class_rooms is not used or needed
+            stmt.setString(3, student.getBirthDate()); // Assuming birthDate is stored as a String (in the format 'yyyy-MM-dd')
+            stmt.setString(4, student.getContact());
+            stmt.setBoolean(5, student.getGender()); // Assuming gender is stored as a boolean (Male = true, Female = false)
+            stmt.setString(6, student.getLevel()); // Assuming level is stored as a string
 
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0; // Return true if at least one row was inserted
@@ -186,17 +191,18 @@ public class DatabaseHelper {
         }
     }
 
+
     // New method for updating a student record
     public boolean updateStudent(Student student) {
-        String updateQuery = "UPDATE student SET fname = ?, lname = ?, year = ?, contact = ?, gender = ?, class_rooms = ? WHERE stud_ID = ?";
+        String updateQuery = "UPDATE student SET fname = ?, lname = ?, birth_date = ?, contact = ?, gender = ?, level = ? WHERE stud_ID = ?";
 
         try (PreparedStatement stmt = this.cnn.prepareStatement(updateQuery)) {
             stmt.setString(1, student.getFname());
             stmt.setString(2, student.getLname());
-            stmt.setInt(3, student.getYear());
-            stmt.setInt(4, student.getContact());
+            stmt.setString(3, student.getBirthDate()); // Assuming you have a method getBirthDate()
+            stmt.setString(4, student.getContact());
             stmt.setBoolean(5, student.getGender());
-            stmt.setInt(6, student.getClassRooms());
+            stmt.setString(6, student.getLevel()); // Assuming you have a method getLevel()
             stmt.setInt(7, student.getId());
 
             int rowsUpdated = stmt.executeUpdate();

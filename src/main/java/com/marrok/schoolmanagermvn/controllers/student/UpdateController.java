@@ -23,7 +23,9 @@ public class UpdateController {
     @FXML
     private TextField contactField;
     @FXML
-    private TextField yearField;
+    private TextField birthDateField; // Updated field for birth date
+    @FXML
+    private TextField levelField; // Updated field for level
 
     private Student student;
     private StudentsController studentsController;
@@ -46,7 +48,9 @@ public class UpdateController {
             GeneralUtil.showAlert(Alert.AlertType.ERROR, "Error", "Database connection error.");
             e.printStackTrace();
         }
+        genderComboBox.getItems().addAll("Male", "Female"); // Add gender options
     }
+
     private void populateFields() {
         if (student != null) {
             firstNameField.setText(student.getFname());
@@ -56,10 +60,10 @@ public class UpdateController {
             genderComboBox.setValue(student.getGender() ? "Male" : "Female");
 
             contactField.setText(String.valueOf(student.getContact()));
-            yearField.setText(String.valueOf(student.getYear()));
+            birthDateField.setText(student.getBirthDate()); // Update this to get the birth date
+            levelField.setText(student.getLevel()); // Update this to get the level
         }
     }
-
 
     public void updateStudent() {
         if (student != null) {
@@ -79,8 +83,9 @@ public class UpdateController {
                 // Update other fields as necessary
                 student.setFname(firstNameField.getText());
                 student.setLname(lastNameField.getText());
-                student.setContact(Integer.parseInt(contactField.getText()));
-                student.setYear(Integer.parseInt(yearField.getText()));
+                student.setContact(contactField.getText());
+                student.setBirthDate(birthDateField.getText()); // Assuming a method exists to set birth date
+                student.setLevel(levelField.getText()); // Assuming a method exists to set level
 
                 // Save the updated student to the database
                 if (dbHelper.updateStudent(student)) {
@@ -100,7 +105,6 @@ public class UpdateController {
             }
         }
     }
-
 
     @FXML
     private void cancel(ActionEvent event) {

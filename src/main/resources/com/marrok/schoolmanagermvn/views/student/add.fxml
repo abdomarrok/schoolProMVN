@@ -6,6 +6,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -37,11 +38,14 @@
         <Label alignment="CENTER" styleClass="lbl" text="Contact:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
         <TextField fx:id="contactField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label alignment="CENTER" styleClass="lbl" text="Year:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-        <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label alignment="CENTER" styleClass="lbl" text="Birth Date:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+        <DatePicker fx:id="birthDateField" GridPane.columnIndex="1" GridPane.rowIndex="4" /> <!-- Added DatePicker for birthDate -->
 
-        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-        <ComboBox fx:id="genderComboBox" prefHeight="23.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <Label alignment="CENTER" styleClass="lbl" text="Level:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+        <TextField fx:id="levelField" GridPane.columnIndex="1" GridPane.rowIndex="5" /> <!-- Added TextField for level -->
+
+        <Label alignment="CENTER" styleClass="lbl" text="Gender:" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+        <ComboBox fx:id="genderComboBox" prefHeight="23.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Male" />
@@ -50,15 +54,14 @@
             </items>
         </ComboBox>
 
-        <Button onAction="#addStudent" prefHeight="26.0" prefWidth="97.0" text="Add" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+        <Button onAction="#addStudent" prefHeight="26.0" prefWidth="97.0" text="Add" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
             <styleClass>
                 <String fx:value="crud-add" />
             </styleClass>
         </Button>
 
-        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+        <Button onAction="#cancel" prefHeight="26.0" prefWidth="99.0" text="Cancel" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="7">
             <styleClass>
-
                 <String fx:value="crud-delete" />
             </styleClass>
         </Button>
@@ -80,8 +83,8 @@
         <URL value="@../../css/all.css" />
         <URL value="@../../css/crud.css" />
     </stylesheets>
-   <padding>
-      <Insets left="20.0" right="20.0" top="20.0" />
-   </padding>
+    <padding>
+        <Insets left="20.0" right="20.0" top="20.0" />
+    </padding>
 
 </GridPane>
